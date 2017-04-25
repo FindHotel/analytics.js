@@ -16083,7 +16083,7 @@ var cookieOptions = {
 
 var Segment = exports = module.exports = integration('Segment.io')
   .option('apiKey', '')
-  .option('apiHost', 'api.segment.io/v1')
+  .option('apiHost', 'localhost:8088/track')
   .option('crossDomainIdServers', [])
   .option('beacon', false)
   .option('retryQueue', false)
@@ -16116,7 +16116,6 @@ exports.global = window;
 
 Segment.prototype.initialize = function() {
   var self = this;
-
   if (this.options.retryQueue) {
     this._lsqueue = new Queue('segmentio', function(item, done) {
       // Update the sentAt time each retry so the tracking-api doesn't interperet a time skew
@@ -16176,7 +16175,7 @@ Segment.prototype.loaded = function() {
  */
 
 Segment.prototype.onpage = function(page) {
-  this.send('/p', page.json());
+  this.send('', page.json());
 };
 
 /**
@@ -16214,7 +16213,7 @@ Segment.prototype.ontrack = function(track) {
   var json = track.json();
   // TODO: figure out why we need traits.
   delete json.traits;
-  this.send('/t', json);
+  this.send('', json);
 };
 
 /**
@@ -16333,7 +16332,7 @@ Segment.prototype.send = function(path, msg, fn) {
 
   function sendAjax() {
     // Beacons are sent as a text/plain POST
-    var headers = { 'Content-Type': 'text/plain' };
+    var headers = { 'Content-Type': 'application/json' };
     send(url, msg, headers, function(err, res) {
       self.debug('ajax sent %o, received %o', msg, arguments);
       if (err) return fn(err);

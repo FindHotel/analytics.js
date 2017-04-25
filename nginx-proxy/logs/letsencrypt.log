@@ -1,0 +1,267 @@
+2017-04-25 10:32:00,945:DEBUG:certbot.log:Root logging level set at 20
+2017-04-25 10:32:00,947:INFO:certbot.log:Saving debug log to /Users/rrh/Code/nginx-proxy/logs/letsencrypt.log
+2017-04-25 10:32:00,948:DEBUG:certbot.main:certbot version: 0.13.0
+2017-04-25 10:32:00,948:DEBUG:certbot.main:Arguments: ['--config-dir', './conf', '--work-dir', './work', '--logs-dir', './logs']
+2017-04-25 10:32:00,949:DEBUG:certbot.main:Discovered plugins: PluginsRegistry(PluginEntryPoint#nginx,PluginEntryPoint#standalone,PluginEntryPoint#manual,PluginEntryPoint#webroot,PluginEntryPoint#apache,PluginEntryPoint#null)
+2017-04-25 10:32:00,950:DEBUG:certbot.plugins.selection:Requested authenticator None and installer None
+2017-04-25 10:32:02,335:DEBUG:certbot_apache.configurator:Apache version is 2.4.18
+2017-04-25 10:32:02,564:DEBUG:certbot.plugins.selection:Multiple candidate plugins: * apache
+Description: Apache Web Server plugin - Beta
+Interfaces: IAuthenticator, IInstaller, IPlugin
+Entry point: apache = certbot_apache.configurator:ApacheConfigurator
+Initialized: <certbot_apache.configurator.ApacheConfigurator object at 0x1069f0750>
+Prep: True
+
+* webroot
+Description: Place files in webroot directory
+Interfaces: IAuthenticator, IPlugin
+Entry point: webroot = certbot.plugins.webroot:Authenticator
+Initialized: <certbot.plugins.webroot.Authenticator object at 0x1073710d0>
+Prep: True
+
+* standalone
+Description: Spin up a temporary webserver
+Interfaces: IAuthenticator, IPlugin
+Entry point: standalone = certbot.plugins.standalone:Authenticator
+Initialized: <certbot.plugins.standalone.Authenticator object at 0x1073717d0>
+Prep: True
+2017-04-25 10:32:14,515:DEBUG:certbot.plugins.selection:Selected authenticator <certbot.plugins.webroot.Authenticator object at 0x1073710d0> and installer None
+2017-04-25 10:32:22,505:DEBUG:acme.client:Sending GET request to https://acme-v01.api.letsencrypt.org/directory.
+2017-04-25 10:32:22,549:DEBUG:requests.packages.urllib3.connectionpool:Starting new HTTPS connection (1): acme-v01.api.letsencrypt.org
+2017-04-25 10:32:23,255:DEBUG:requests.packages.urllib3.connectionpool:https://acme-v01.api.letsencrypt.org:443 "GET /directory HTTP/1.1" 200 352
+2017-04-25 10:32:23,256:DEBUG:acme.client:Received response:
+HTTP 200
+Server: nginx
+Content-Type: application/json
+Content-Length: 352
+Boulder-Request-Id: HL6ZTdpG8yyVMqZfJaIadwQm3jLLVV7jt9YaPaTl_hI
+Replay-Nonce: Yo87XSghfuV8JXV2P76iRXyOqoRrKlQfAb14F8u6psU
+X-Frame-Options: DENY
+Strict-Transport-Security: max-age=604800
+Expires: Tue, 25 Apr 2017 10:32:23 GMT
+Cache-Control: max-age=0, no-cache, no-store
+Pragma: no-cache
+Date: Tue, 25 Apr 2017 10:32:23 GMT
+Connection: keep-alive
+
+{
+  "key-change": "https://acme-v01.api.letsencrypt.org/acme/key-change",
+  "new-authz": "https://acme-v01.api.letsencrypt.org/acme/new-authz",
+  "new-cert": "https://acme-v01.api.letsencrypt.org/acme/new-cert",
+  "new-reg": "https://acme-v01.api.letsencrypt.org/acme/new-reg",
+  "revoke-cert": "https://acme-v01.api.letsencrypt.org/acme/revoke-cert"
+}
+2017-04-25 10:32:23,256:DEBUG:acme.client:Requesting fresh nonce
+2017-04-25 10:32:23,256:DEBUG:acme.client:Sending HEAD request to https://acme-v01.api.letsencrypt.org/acme/new-reg.
+2017-04-25 10:32:23,464:DEBUG:requests.packages.urllib3.connectionpool:https://acme-v01.api.letsencrypt.org:443 "HEAD /acme/new-reg HTTP/1.1" 405 0
+2017-04-25 10:32:23,464:DEBUG:acme.client:Received response:
+HTTP 405
+Server: nginx
+Content-Type: application/problem+json
+Content-Length: 91
+Allow: POST
+Boulder-Request-Id: hSDSQ9UMyd3llbMUiFbpLz4V-syNuzJbjK9sEWDw0jg
+Replay-Nonce: -iUK18Tkq77KWcyKAk4Adj3gTPXZhatDXoZVFOhlFn0
+Expires: Tue, 25 Apr 2017 10:32:23 GMT
+Cache-Control: max-age=0, no-cache, no-store
+Pragma: no-cache
+Date: Tue, 25 Apr 2017 10:32:23 GMT
+Connection: keep-alive
+
+
+2017-04-25 10:32:23,465:DEBUG:acme.client:Storing nonce: -iUK18Tkq77KWcyKAk4Adj3gTPXZhatDXoZVFOhlFn0
+2017-04-25 10:32:23,466:DEBUG:acme.client:JWS payload:
+{
+  "contact": [
+    "mailto:raam@findhotel.net"
+  ], 
+  "resource": "new-reg"
+}
+2017-04-25 10:32:23,469:DEBUG:acme.client:Sending POST request to https://acme-v01.api.letsencrypt.org/acme/new-reg:
+{
+  "header": {
+    "alg": "RS256", 
+    "jwk": {
+      "e": "AQAB", 
+      "kty": "RSA", 
+      "n": "xjKxtVn1WWBvv6zSeMK1tg0hhLY56-lKs60RcpSojumQiXyIBH1rOeENLReYkMIKzGtqKvOpvecvbGvp4tK7Drrew7ISb7Ohpw0JjJkcI6NijopHVS1pFcX7FJYKvJvizXM_4wE9UZsWmc-AhFnR-2upF7KwRSFBOYRlN0qDd5H52ry63ds0hFbUZbfXCVIoYxrX192vCRetY4lvj_3gaW6YsRdrpEAcRd_l38uEPJWHjrDcSLuUWZi3H1yPqIdzNwqio03Eh6YL-3H7k5YKclm1QOIas--1N2oWSXd_9cxdhyQHskwpK6A4slJHTl6zEA2GrGjBKAB8cx8epVrSuQ"
+    }
+  }, 
+  "protected": "eyJub25jZSI6ICItaVVLMThUa3E3N0tXY3lLQWs0QWRqM2dUUFhaaGF0RFhvWlZGT2hsRm4wIn0", 
+  "payload": "ewogICJjb250YWN0IjogWwogICAgIm1haWx0bzpyYWFtQGZpbmRob3RlbC5uZXQiCiAgXSwgCiAgInJlc291cmNlIjogIm5ldy1yZWciCn0", 
+  "signature": "k6015CWWSYeElBB-t_47XhVb6FZo4QUFNk64FNO9dMLgvNGCmsYbBZAT7NYi2HA1cX67g9M6p55tG82oGnm-wB8kJSACiZ5AyEXnIfZm-RNArDXK_bhSPptSeZ8lzD42YRhOSRscc0q3B2GANTiGB8Y-T3pjTxYOmxEgTRtJbWrJNDqe8wlnHrOAv0_rr0QvC1MITaeKnQEkdm97li-nPHUs0ktJovqQ6o60s6NyWj3qPmFgraOyhdbw2GHPW_mVVa9475SfRsPisTNwGIzURJEwTe-NC3jCmLKExisrM6WcS8IH8dhpa_Q7Jo41IG_eYbBOEORVBbAtEptTARHDOg"
+}
+2017-04-25 10:32:23,764:DEBUG:requests.packages.urllib3.connectionpool:https://acme-v01.api.letsencrypt.org:443 "POST /acme/new-reg HTTP/1.1" 201 577
+2017-04-25 10:32:23,765:DEBUG:acme.client:Received response:
+HTTP 201
+Server: nginx
+Content-Type: application/json
+Content-Length: 577
+Boulder-Request-Id: kCwz9y0H5hJ9LJQrl16hy1ICVza71rjnnXKu0yhy1ss
+Boulder-Requester: 13294876
+Link: <https://acme-v01.api.letsencrypt.org/acme/new-authz>;rel="next", <https://letsencrypt.org/documents/LE-SA-v1.1.1-August-1-2016.pdf>;rel="terms-of-service"
+Location: https://acme-v01.api.letsencrypt.org/acme/reg/13294876
+Replay-Nonce: U070KMhPIhpG0du9h5LNuxZqGMUVlxikP3m6OOYuwDU
+X-Frame-Options: DENY
+Strict-Transport-Security: max-age=604800
+Expires: Tue, 25 Apr 2017 10:32:23 GMT
+Cache-Control: max-age=0, no-cache, no-store
+Pragma: no-cache
+Date: Tue, 25 Apr 2017 10:32:23 GMT
+Connection: keep-alive
+
+{
+  "id": 13294876,
+  "key": {
+    "kty": "RSA",
+    "n": "xjKxtVn1WWBvv6zSeMK1tg0hhLY56-lKs60RcpSojumQiXyIBH1rOeENLReYkMIKzGtqKvOpvecvbGvp4tK7Drrew7ISb7Ohpw0JjJkcI6NijopHVS1pFcX7FJYKvJvizXM_4wE9UZsWmc-AhFnR-2upF7KwRSFBOYRlN0qDd5H52ry63ds0hFbUZbfXCVIoYxrX192vCRetY4lvj_3gaW6YsRdrpEAcRd_l38uEPJWHjrDcSLuUWZi3H1yPqIdzNwqio03Eh6YL-3H7k5YKclm1QOIas--1N2oWSXd_9cxdhyQHskwpK6A4slJHTl6zEA2GrGjBKAB8cx8epVrSuQ",
+    "e": "AQAB"
+  },
+  "contact": [
+    "mailto:raam@findhotel.net"
+  ],
+  "initialIp": "95.97.71.50",
+  "createdAt": "2017-04-25T10:32:23.670490797Z",
+  "Status": "valid"
+}
+2017-04-25 10:32:23,765:DEBUG:acme.client:Storing nonce: U070KMhPIhpG0du9h5LNuxZqGMUVlxikP3m6OOYuwDU
+2017-04-25 10:32:29,507:DEBUG:acme.client:JWS payload:
+{
+  "contact": [
+    "mailto:raam@findhotel.net"
+  ], 
+  "resource": "reg", 
+  "agreement": "https://letsencrypt.org/documents/LE-SA-v1.1.1-August-1-2016.pdf", 
+  "key": {
+    "e": "AQAB", 
+    "kty": "RSA", 
+    "n": "xjKxtVn1WWBvv6zSeMK1tg0hhLY56-lKs60RcpSojumQiXyIBH1rOeENLReYkMIKzGtqKvOpvecvbGvp4tK7Drrew7ISb7Ohpw0JjJkcI6NijopHVS1pFcX7FJYKvJvizXM_4wE9UZsWmc-AhFnR-2upF7KwRSFBOYRlN0qDd5H52ry63ds0hFbUZbfXCVIoYxrX192vCRetY4lvj_3gaW6YsRdrpEAcRd_l38uEPJWHjrDcSLuUWZi3H1yPqIdzNwqio03Eh6YL-3H7k5YKclm1QOIas--1N2oWSXd_9cxdhyQHskwpK6A4slJHTl6zEA2GrGjBKAB8cx8epVrSuQ"
+  }
+}
+2017-04-25 10:32:29,511:DEBUG:acme.client:Sending POST request to https://acme-v01.api.letsencrypt.org/acme/reg/13294876:
+{
+  "header": {
+    "alg": "RS256", 
+    "jwk": {
+      "e": "AQAB", 
+      "kty": "RSA", 
+      "n": "xjKxtVn1WWBvv6zSeMK1tg0hhLY56-lKs60RcpSojumQiXyIBH1rOeENLReYkMIKzGtqKvOpvecvbGvp4tK7Drrew7ISb7Ohpw0JjJkcI6NijopHVS1pFcX7FJYKvJvizXM_4wE9UZsWmc-AhFnR-2upF7KwRSFBOYRlN0qDd5H52ry63ds0hFbUZbfXCVIoYxrX192vCRetY4lvj_3gaW6YsRdrpEAcRd_l38uEPJWHjrDcSLuUWZi3H1yPqIdzNwqio03Eh6YL-3H7k5YKclm1QOIas--1N2oWSXd_9cxdhyQHskwpK6A4slJHTl6zEA2GrGjBKAB8cx8epVrSuQ"
+    }
+  }, 
+  "protected": "eyJub25jZSI6ICJVMDcwS01oUElocEcwZHU5aDVMTnV4WnFHTVVWbHhpa1AzbTZPT1l1d0RVIn0", 
+  "payload": "ewogICJjb250YWN0IjogWwogICAgIm1haWx0bzpyYWFtQGZpbmRob3RlbC5uZXQiCiAgXSwgCiAgInJlc291cmNlIjogInJlZyIsIAogICJhZ3JlZW1lbnQiOiAiaHR0cHM6Ly9sZXRzZW5jcnlwdC5vcmcvZG9jdW1lbnRzL0xFLVNBLXYxLjEuMS1BdWd1c3QtMS0yMDE2LnBkZiIsIAogICJrZXkiOiB7CiAgICAiZSI6ICJBUUFCIiwgCiAgICAia3R5IjogIlJTQSIsIAogICAgIm4iOiAieGpLeHRWbjFXV0J2djZ6U2VNSzF0ZzBoaExZNTYtbEtzNjBSY3BTb2p1bVFpWHlJQkgxck9lRU5MUmVZa01JS3pHdHFLdk9wdmVjdmJHdnA0dEs3RHJyZXc3SVNiN09ocHcwSmpKa2NJNk5pam9wSFZTMXBGY1g3RkpZS3ZKdml6WE1fNHdFOVVac1dtYy1BaEZuUi0ydXBGN0t3UlNGQk9ZUmxOMHFEZDVINTJyeTYzZHMwaEZiVVpiZlhDVklvWXhyWDE5MnZDUmV0WTRsdmpfM2dhVzZZc1JkcnBFQWNSZF9sMzh1RVBKV0hqckRjU0x1VVdaaTNIMXlQcUlkek53cWlvMDNFaDZZTC0zSDdrNVlLY2xtMVFPSWFzLS0xTjJvV1NYZF85Y3hkaHlRSHNrd3BLNkE0c2xKSFRsNnpFQTJHckdqQktBQjhjeDhlcFZyU3VRIgogIH0KfQ", 
+  "signature": "SwwguuBOrCvoFAIsFTfBhkQL5PLeqLigjBnf5lsW7GhlA6H82l-3m9q1twULACboBMZ4ckX9bJP4n0GtFVPXK-3zcRpxBzfBrkbbiAzB7Xp47xuoy3Yi4Y19v76SA7T2Wp5KCbCBChcVaQQTHbQ-GMwN8mo_uewwdArm3b1JLVPJAvCg3mTq512dZe69wn7cAYDPCmKA4t6JOeXPjg7bB61CCiKZwjtFYpYEHmkYhXygV3DXiRmiFXt0Cp1rVthczhg9NtnV0jLhT0Sp5dQFSaCLQ0w9JMfrQnnwUP84YNZ_WxS_nEphQeDMOGBcAMIP-7KH9xO9d-B1CVTM_VkDig"
+}
+2017-04-25 10:32:29,907:DEBUG:requests.packages.urllib3.connectionpool:https://acme-v01.api.letsencrypt.org:443 "POST /acme/reg/13294876 HTTP/1.1" 202 650
+2017-04-25 10:32:29,908:DEBUG:acme.client:Received response:
+HTTP 202
+Server: nginx
+Content-Type: application/json
+Content-Length: 650
+Boulder-Request-Id: ku4_Xbme3cf1ic2-MBne-06GMjc7sJuCAaQQYRuKoUA
+Boulder-Requester: 13294876
+Link: <https://acme-v01.api.letsencrypt.org/acme/new-authz>;rel="next", <https://letsencrypt.org/documents/LE-SA-v1.1.1-August-1-2016.pdf>;rel="terms-of-service"
+Replay-Nonce: SSwug6UILFnVOlxD8OVIsyyBcqjE3mIYw0gBX2bDn6c
+Expires: Tue, 25 Apr 2017 10:32:29 GMT
+Cache-Control: max-age=0, no-cache, no-store
+Pragma: no-cache
+Date: Tue, 25 Apr 2017 10:32:29 GMT
+Connection: keep-alive
+
+{
+  "id": 13294876,
+  "key": {
+    "kty": "RSA",
+    "n": "xjKxtVn1WWBvv6zSeMK1tg0hhLY56-lKs60RcpSojumQiXyIBH1rOeENLReYkMIKzGtqKvOpvecvbGvp4tK7Drrew7ISb7Ohpw0JjJkcI6NijopHVS1pFcX7FJYKvJvizXM_4wE9UZsWmc-AhFnR-2upF7KwRSFBOYRlN0qDd5H52ry63ds0hFbUZbfXCVIoYxrX192vCRetY4lvj_3gaW6YsRdrpEAcRd_l38uEPJWHjrDcSLuUWZi3H1yPqIdzNwqio03Eh6YL-3H7k5YKclm1QOIas--1N2oWSXd_9cxdhyQHskwpK6A4slJHTl6zEA2GrGjBKAB8cx8epVrSuQ",
+    "e": "AQAB"
+  },
+  "contact": [
+    "mailto:raam@findhotel.net"
+  ],
+  "agreement": "https://letsencrypt.org/documents/LE-SA-v1.1.1-August-1-2016.pdf",
+  "initialIp": "95.97.71.50",
+  "createdAt": "2017-04-25T10:32:23Z",
+  "Status": "valid"
+}
+2017-04-25 10:32:29,909:DEBUG:acme.client:Storing nonce: SSwug6UILFnVOlxD8OVIsyyBcqjE3mIYw0gBX2bDn6c
+2017-04-25 10:32:29,912:DEBUG:certbot.reporter:Reporting to user: Your account credentials have been saved in your Certbot configuration directory at /Users/rrh/Code/nginx-proxy/conf. You should make a secure backup of this folder now. This configuration directory will also contain certificates and private keys obtained by Certbot so making regular backups of this folder is ideal.
+2017-04-25 10:32:36,306:DEBUG:certbot.eff:Sending POST request to https://supporters.eff.org/subscribe/certbot:
+{'email': 'raam@findhotel.net', 'data_type': 'json', 'form_id': 'eff_supporters_library_subscribe_form'}
+2017-04-25 10:32:36,496:DEBUG:requests.packages.urllib3.connectionpool:Starting new HTTPS connection (1): supporters.eff.org
+2017-04-25 10:32:41,784:DEBUG:requests.packages.urllib3.connectionpool:https://supporters.eff.org:443 "POST /subscribe/certbot HTTP/1.1" 200 90
+2017-04-25 10:32:41,788:DEBUG:certbot.eff:Received response:
+{"status":true,"message":"Please check your email for a confirmation link."}
+2017-04-25 10:32:41,788:DEBUG:certbot.main:Picked account: <Account(5ffa4a80c358f5f3235c9d0f49ff48db)>
+2017-04-25 10:32:41,789:DEBUG:certbot.display.ops:No installer, picking names manually
+2017-04-25 10:32:47,621:INFO:certbot.main:Obtaining a new certificate
+2017-04-25 10:32:47,621:DEBUG:acme.client:JWS payload:
+{
+  "identifier": {
+    "type": "dns", 
+    "value": "localhost"
+  }, 
+  "resource": "new-authz"
+}
+2017-04-25 10:32:47,624:DEBUG:acme.client:Sending POST request to https://acme-v01.api.letsencrypt.org/acme/new-authz:
+{
+  "header": {
+    "alg": "RS256", 
+    "jwk": {
+      "e": "AQAB", 
+      "kty": "RSA", 
+      "n": "xjKxtVn1WWBvv6zSeMK1tg0hhLY56-lKs60RcpSojumQiXyIBH1rOeENLReYkMIKzGtqKvOpvecvbGvp4tK7Drrew7ISb7Ohpw0JjJkcI6NijopHVS1pFcX7FJYKvJvizXM_4wE9UZsWmc-AhFnR-2upF7KwRSFBOYRlN0qDd5H52ry63ds0hFbUZbfXCVIoYxrX192vCRetY4lvj_3gaW6YsRdrpEAcRd_l38uEPJWHjrDcSLuUWZi3H1yPqIdzNwqio03Eh6YL-3H7k5YKclm1QOIas--1N2oWSXd_9cxdhyQHskwpK6A4slJHTl6zEA2GrGjBKAB8cx8epVrSuQ"
+    }
+  }, 
+  "protected": "eyJub25jZSI6ICJTU3d1ZzZVSUxGblZPbHhEOE9WSXN5eUJjcWpFM21JWXcwZ0JYMmJEbjZjIn0", 
+  "payload": "ewogICJpZGVudGlmaWVyIjogewogICAgInR5cGUiOiAiZG5zIiwgCiAgICAidmFsdWUiOiAibG9jYWxob3N0IgogIH0sIAogICJyZXNvdXJjZSI6ICJuZXctYXV0aHoiCn0", 
+  "signature": "Y4pKKQFfaYOS8MzQX4rbhjtWVebkEk9atLVrC-ypPB_Hv8gbAPpiWCBu2Xkatf29JnbK24e4fpDsSaPrw9Itc0h2jOir3l0bty-8uScMT0DaEk_aophQQ0vkfv9jZ7CqT-kgUPfgg26olvjpinp4HtBl0zlHBMGdnm6sevgSjlJ54rNvEv-vqx2hAbg25fMfal2moAygglJpolKHjbu_GVHvAGJ5QmlTGfuv9wKtiXapOweZVOlMAi6Vi7y_uZnEgbN3Epsb1gr5igwwkAg_Jg8ZmjNelrqSvkbRNp1P9PXsNIIXCHyS_f-Y5_SUMM8GcQO1uieMapmDtfdKos-Zrw"
+}
+2017-04-25 10:32:48,294:DEBUG:requests.packages.urllib3.connectionpool:https://acme-v01.api.letsencrypt.org:443 "POST /acme/new-authz HTTP/1.1" 400 137
+2017-04-25 10:32:48,295:DEBUG:acme.client:Received response:
+HTTP 400
+Server: nginx
+Content-Type: application/problem+json
+Content-Length: 137
+Boulder-Request-Id: Xjk6ctd8OZuWUGGZASL-f1f1UWY_R-H_h9ZHvTZAodc
+Boulder-Requester: 13294876
+Replay-Nonce: 6OlKh_TUsStcseridBHfM8Hk-yiXKSy2neMKro9HOcQ
+Expires: Tue, 25 Apr 2017 10:32:48 GMT
+Cache-Control: max-age=0, no-cache, no-store
+Pragma: no-cache
+Date: Tue, 25 Apr 2017 10:32:48 GMT
+Connection: close
+
+{
+  "type": "urn:acme:error:malformed",
+  "detail": "Error creating new authz :: DNS name does not have enough labels",
+  "status": 400
+}
+2017-04-25 10:32:48,296:DEBUG:acme.client:Storing nonce: 6OlKh_TUsStcseridBHfM8Hk-yiXKSy2neMKro9HOcQ
+2017-04-25 10:32:48,297:DEBUG:certbot.log:Exiting abnormally:
+Traceback (most recent call last):
+  File "/usr/local/bin/certbot", line 11, in <module>
+    load_entry_point('certbot==0.13.0', 'console_scripts', 'certbot')()
+  File "/usr/local/Cellar/certbot/0.13.0_1/libexec/lib/python2.7/site-packages/certbot/main.py", line 755, in main
+    return config.func(config, plugins)
+  File "/usr/local/Cellar/certbot/0.13.0_1/libexec/lib/python2.7/site-packages/certbot/main.py", line 682, in certonly
+    lineage = _get_and_save_cert(le_client, config, domains, certname, lineage)
+  File "/usr/local/Cellar/certbot/0.13.0_1/libexec/lib/python2.7/site-packages/certbot/main.py", line 82, in _get_and_save_cert
+    lineage = le_client.obtain_and_enroll_certificate(domains, certname)
+  File "/usr/local/Cellar/certbot/0.13.0_1/libexec/lib/python2.7/site-packages/certbot/client.py", line 316, in obtain_and_enroll_certificate
+    certr, chain, key, _ = self.obtain_certificate(domains)
+  File "/usr/local/Cellar/certbot/0.13.0_1/libexec/lib/python2.7/site-packages/certbot/client.py", line 285, in obtain_certificate
+    self.config.allow_subset_of_names)
+  File "/usr/local/Cellar/certbot/0.13.0_1/libexec/lib/python2.7/site-packages/certbot/auth_handler.py", line 66, in get_authorizations
+    self.authzr[domain] = self.acme.request_domain_challenges(domain)
+  File "/usr/local/Cellar/certbot/0.13.0_1/libexec/lib/python2.7/site-packages/acme/client.py", line 212, in request_domain_challenges
+    typ=messages.IDENTIFIER_FQDN, value=domain), new_authzr_uri)
+  File "/usr/local/Cellar/certbot/0.13.0_1/libexec/lib/python2.7/site-packages/acme/client.py", line 191, in request_challenges
+    response = self.net.post(self.directory.new_authz, new_authz)
+  File "/usr/local/Cellar/certbot/0.13.0_1/libexec/lib/python2.7/site-packages/acme/client.py", line 670, in post
+    return self._post_once(*args, **kwargs)
+  File "/usr/local/Cellar/certbot/0.13.0_1/libexec/lib/python2.7/site-packages/acme/client.py", line 683, in _post_once
+    return self._check_response(response, content_type=content_type)
+  File "/usr/local/Cellar/certbot/0.13.0_1/libexec/lib/python2.7/site-packages/acme/client.py", line 570, in _check_response
+    raise messages.Error.from_json(jobj)
+Error: urn:acme:error:malformed :: The request message was malformed :: Error creating new authz :: DNS name does not have enough labels
+
