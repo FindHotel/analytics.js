@@ -3349,7 +3349,7 @@ Segment.prototype.send = function(path, msg, fn) {
 
   // send
   if (this.options.retryQueue) {
-    var headers = { 'Content-Type': 'text/plain' };
+    var headers = { 'Content-Type': 'application/json' };
     this._lsqueue.addItem({
       url: url,
       headers: headers,
@@ -3371,7 +3371,7 @@ Segment.prototype.send = function(path, msg, fn) {
 
   function sendAjax() {
     // Beacons are sent as a text/plain POST
-    var headers = { 'Content-Type': 'text/json' };
+    var headers = { 'Content-Type': 'application/json' };
     send(url, msg, headers, function(err, res) {
       self.debug('ajax sent %o, received %o', msg, arguments);
       if (err) return fn(err);
@@ -12954,7 +12954,7 @@ module.exports={
   "dependencies": {
     "@segment/analytics.js-core": "^3.0.0",
     "@segment/analytics.js-integration": "^3.1.0",
-    "analytics.js-integration-findhotel": "git://github.com/FindHotel/analytics.js-integration-findhotel#1f082b2c60044599442aca2e81ffd15682648ae5"
+    "analytics.js-integration-findhotel": "git://github.com/FindHotel/analytics.js-integration-findhotel.git#39fbd41a47f3ebfd5adce1d74e830726edbe8733"
   },
   "devDependencies": {
     "@segment/eslint-config": "^3.1.1",
