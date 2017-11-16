@@ -2971,7 +2971,7 @@ module.exports={
         "spec": ">=3.0.0 <4.0.0",
         "type": "range"
       },
-      "/Users/jop/Development/analytics.js"
+      "/Users/ali/find_hotel/analytics.js"
     ]
   ],
   "_from": "@segment/analytics.js-core@>=3.0.0 <4.0.0",
@@ -3005,7 +3005,7 @@ module.exports={
   "_shasum": "dbaf51d4eb17a29f32eab5fff3e655a87f23ea52",
   "_shrinkwrap": null,
   "_spec": "@segment/analytics.js-core@^3.0.0",
-  "_where": "/Users/jop/Development/analytics.js",
+  "_where": "/Users/ali/find_hotel/analytics.js",
   "author": {
     "name": "Segment",
     "email": "friends@segment.com"
@@ -3618,7 +3618,7 @@ Segment.prototype.send = function(path, msg, fn) {
   if (this.options.retryQueue) {
     var headers = {
       'Content-Type': 'application/json',
-      'x-api-key': this.options.apiKey
+      'x-api-key': self.options.apiKey
     };
     this._lsqueue.addItem({
       url: url,
@@ -3643,7 +3643,7 @@ Segment.prototype.send = function(path, msg, fn) {
     // Beacons are sent as a text/plain POST
     var headers = {
       'Content-Type': 'application/json',
-      'x-api-key': this.options.apiKey
+      'x-api-key': self.options.apiKey
     };
     send(url, msg, headers, function(err, res) {
       self.debug('ajax sent %o, received %o', msg, arguments);
@@ -13329,7 +13329,7 @@ module.exports={
   "dependencies": {
     "@segment/analytics.js-core": "^3.0.0",
     "@segment/analytics.js-integration": "^3.1.0",
-    "analytics.js-integration-findhotel": "git://github.com/FindHotel/analytics.js-integration-findhotel.git#0857658825c4767b4d95bcc3c184a1b9f9057349"
+    "analytics.js-integration-findhotel": "git://github.com/FindHotel/analytics.js-integration-findhotel.git#d2fb2fb1479bf80cc2314fc30fa7873e277df5e2"
   },
   "devDependencies": {
     "@segment/eslint-config": "^3.1.1",
