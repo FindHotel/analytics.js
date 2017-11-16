@@ -35,7 +35,7 @@ Object.keys(Integrations).forEach(function(name) {
   analytics.use(Integrations[name]);
 });
 
-},{"../package.json":112,"./integrations":2,"@segment/analytics.js-core":22}],2:[function(require,module,exports){
+},{"../package.json":113,"./integrations":2,"@segment/analytics.js-core":22}],2:[function(require,module,exports){
 /* eslint quote-props: off */
 'use strict';
 
@@ -1421,6 +1421,8 @@ Analytics.prototype.init = Analytics.prototype.initialize = function(settings, o
   }
 
   // initialize integrations, passing ready
+  // create a list of any integrations that did not initialize - this will be passed with all events for replay support:
+  this.failedInitializations = [];
   each(function(integration) {
     if (options.initialPageview && integration.options.initialPageview === false) {
       integration.page = after(2, integration.page);
@@ -1428,7 +1430,15 @@ Analytics.prototype.init = Analytics.prototype.initialize = function(settings, o
 
     integration.analytics = self;
     integration.once('ready', ready);
-    integration.initialize();
+    try {
+      integration.initialize();
+    } catch (e) {
+      var integrationName = integration.name;
+      self.failedInitializations.push(integrationName);
+      self.log('Error initializing %s integration: %o', integrationName, e);
+      // Mark integration as ready to prevent blocking of anyone listening to analytics.ready()
+      integration.ready();
+    }
   }, integrations);
 
   // backwards compat with angular plugin.
@@ -1575,8 +1585,18 @@ Analytics.prototype.track = function(event, properties, options, fn) {
   plan = events[event];
   if (plan) {
     this.log('plan %o - %o', event, plan);
-    if (plan.enabled === false) return this._callback(fn);
-    defaults(msg.integrations, plan.integrations || {});
+    if (plan.enabled === false) {
+      // Disabled events should always be sent to Segment.
+      defaults(msg.integrations, { All: false, 'Segment.io': true });
+    } else {
+      defaults(msg.integrations, plan.integrations || {});
+    }
+  } else {
+    var defaultPlan = events.__default || { enabled: true };
+    if (!defaultPlan.enabled) {
+      // Disabled events should always be sent to Segment.
+      defaults(msg.integrations, { All: false, 'Segment.io': true });
+    }
   }
 
   this._invoke('track', new Track(msg));
@@ -1861,11 +1881,19 @@ Analytics.prototype._callback = function(fn) {
  */
 
 Analytics.prototype._invoke = function(method, facade) {
+  var self = this;
   this.emit('invoke', facade);
 
+  var failedInitializations = self.failedInitializations || [];
   each(function(integration, name) {
     if (!facade.enabled(name)) return;
-    integration.invoke.call(integration, method, facade);
+    // Check if an integration failed to initialize.
+    // If so, do not process the message as the integration is in an unstable state.
+    if (failedInitializations.indexOf(name) >= 0) {
+      self.log('Skipping invokation of .%s method of %s integration. Integation failed to initialize properly.', method, name);
+    } else {
+      integration.invoke.call(integration, method, facade);
+    }
   }, this._integrations);
 
   return this;
@@ -1975,7 +2003,7 @@ module.exports.memory = memory;
 module.exports.store = store;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./cookie":19,"./group":21,"./memory":23,"./normalize":24,"./pageDefaults":25,"./store":26,"./user":27,"@ndhoule/after":3,"@ndhoule/clone":5,"@ndhoule/defaults":6,"@ndhoule/each":8,"@ndhoule/foldl":11,"@ndhoule/keys":13,"@ndhoule/pick":15,"@segment/is-meta":39,"@segment/prevent-default":52,"bind-all":58,"component-emitter":64,"component-event":65,"component-querystring":67,"component-type":69,"debug":71,"is":76,"next-tick":86,"segmentio-facade":95}],19:[function(require,module,exports){
+},{"./cookie":19,"./group":21,"./memory":23,"./normalize":24,"./pageDefaults":25,"./store":26,"./user":27,"@ndhoule/after":3,"@ndhoule/clone":5,"@ndhoule/defaults":6,"@ndhoule/each":8,"@ndhoule/foldl":11,"@ndhoule/keys":13,"@ndhoule/pick":15,"@segment/is-meta":39,"@segment/prevent-default":52,"bind-all":58,"component-emitter":64,"component-event":65,"component-querystring":67,"component-type":69,"debug":71,"is":76,"next-tick":87,"segmentio-facade":96}],19:[function(require,module,exports){
 'use strict';
 
 /**
@@ -2930,7 +2958,7 @@ module.exports = bindAll(new User());
 
 module.exports.User = User;
 
-},{"./cookie":19,"./entity":20,"bind-all":58,"component-cookie":61,"debug":71,"inherits":74,"uuid":109}],28:[function(require,module,exports){
+},{"./cookie":19,"./entity":20,"bind-all":58,"component-cookie":61,"debug":71,"inherits":74,"uuid":110}],28:[function(require,module,exports){
 module.exports={
   "_args": [
     [
@@ -2943,23 +2971,23 @@ module.exports={
         "spec": ">=3.0.0 <4.0.0",
         "type": "range"
       },
-      "/Users/jopdeklein/Development/analytics.js"
+      "/Users/jop/Development/analytics.js"
     ]
   ],
   "_from": "@segment/analytics.js-core@>=3.0.0 <4.0.0",
-  "_id": "@segment/analytics.js-core@3.0.0",
+  "_id": "@segment/analytics.js-core@3.2.5",
   "_inCache": true,
   "_location": "/@segment/analytics.js-core",
-  "_nodeVersion": "4.4.5",
+  "_nodeVersion": "4.8.6",
   "_npmOperationalInternal": {
-    "host": "packages-16-east.internal.npmjs.com",
-    "tmp": "tmp/analytics.js-core-3.0.0.tgz_1464222726516_0.005199481267482042"
+    "host": "s3://npm-registry-packages",
+    "tmp": "tmp/analytics.js-core-3.2.5.tgz_1510261887248_0.4549919664859772"
   },
   "_npmUser": {
-    "name": "segment",
+    "name": "segment-admin",
     "email": "tools+npm@segment.com"
   },
-  "_npmVersion": "2.15.5",
+  "_npmVersion": "2.15.11",
   "_phantomChildren": {},
   "_requested": {
     "raw": "@segment/analytics.js-core@^3.0.0",
@@ -2973,11 +3001,11 @@ module.exports={
   "_requiredBy": [
     "/"
   ],
-  "_resolved": "https://registry.npmjs.org/@segment/analytics.js-core/-/analytics.js-core-3.0.0.tgz",
-  "_shasum": "166e682023e6086d41e53abe5cddb23bf02b14ed",
+  "_resolved": "https://registry.npmjs.org/@segment/analytics.js-core/-/analytics.js-core-3.2.5.tgz",
+  "_shasum": "dbaf51d4eb17a29f32eab5fff3e655a87f23ea52",
   "_shrinkwrap": null,
   "_spec": "@segment/analytics.js-core@^3.0.0",
-  "_where": "/Users/jopdeklein/Development/analytics.js",
+  "_where": "/Users/jop/Development/analytics.js",
   "author": {
     "name": "Segment",
     "email": "friends@segment.com"
@@ -3022,23 +3050,21 @@ module.exports={
   },
   "description": "The hassle-free way to integrate analytics into any web application.",
   "devDependencies": {
-    "@segment/analytics.js-integration": "^2.0.0",
+    "@segment/analytics.js-integration": "^3.2.0",
     "@segment/eslint-config": "^3.1.1",
-    "browserify": "^13.0.0",
-    "browserify-istanbul": "^2.0.0",
+    "browserify": "13.0.0",
     "compat-trigger-event": "^1.0.0",
     "component-each": "^0.2.6",
     "eslint": "^2.9.0",
     "eslint-plugin-mocha": "^2.2.0",
     "eslint-plugin-require-path-exists": "^1.1.5",
-    "istanbul": "^0.4.3",
-    "jquery": "^1.12.3",
-    "karma": "^0.13.22",
+    "jquery": "^3.2.1",
+    "karma": "1.3.0",
     "karma-browserify": "^5.0.4",
     "karma-chrome-launcher": "^1.0.1",
     "karma-coverage": "^1.0.0",
     "karma-junit-reporter": "^1.0.0",
-    "karma-mocha": "^1.0.1",
+    "karma-mocha": "1.0.1",
     "karma-phantomjs-launcher": "^1.0.0",
     "karma-sauce-launcher": "^1.0.0",
     "karma-spec-reporter": "0.0.26",
@@ -3050,9 +3076,10 @@ module.exports={
   },
   "directories": {},
   "dist": {
-    "shasum": "166e682023e6086d41e53abe5cddb23bf02b14ed",
-    "tarball": "https://registry.npmjs.org/@segment/analytics.js-core/-/analytics.js-core-3.0.0.tgz"
+    "shasum": "dbaf51d4eb17a29f32eab5fff3e655a87f23ea52",
+    "tarball": "https://registry.npmjs.org/@segment/analytics.js-core/-/analytics.js-core-3.2.5.tgz"
   },
+  "gitHead": "100e85cb40ed3a9e518ac221db8b25ad77264750",
   "homepage": "https://github.com/segmentio/analytics.js-core#readme",
   "keywords": [
     "analytics",
@@ -3064,7 +3091,247 @@ module.exports={
   "main": "lib/index.js",
   "maintainers": [
     {
-      "name": "segment",
+      "name": "josh_segment",
+      "email": "josh@segment.com"
+    },
+    {
+      "name": "atrivedi1",
+      "email": "akash@segment.com"
+    },
+    {
+      "name": "segment-scott",
+      "email": "scott@segment.com"
+    },
+    {
+      "name": "emily.luckette",
+      "email": "emily@segment.com"
+    },
+    {
+      "name": "xagos",
+      "email": "xavier.agostini@mail.mcgill.ca"
+    },
+    {
+      "name": "andreiko_ru",
+      "email": "mail@andreiko.ru"
+    },
+    {
+      "name": "f2prateek",
+      "email": "f2prateek@gmail.com"
+    },
+    {
+      "name": "dscrobonia",
+      "email": "davidscrobonia@gmail.com"
+    },
+    {
+      "name": "emilio-gomez-lavin",
+      "email": "emilio@segment.com"
+    },
+    {
+      "name": "vdemedes",
+      "email": "vdemedes@gmail.com"
+    },
+    {
+      "name": "sahilp",
+      "email": "sahil@segment.com"
+    },
+    {
+      "name": "segment-ulysse",
+      "email": "ulysse@segment.com"
+    },
+    {
+      "name": "erickimsegment",
+      "email": "eric@segment.com"
+    },
+    {
+      "name": "segment-andy-yeo",
+      "email": "andy.yeo@segment.com"
+    },
+    {
+      "name": "segment-maggie-chu",
+      "email": "maggie@segment.com"
+    },
+    {
+      "name": "systemizer",
+      "email": "robmcqn@gmail.com"
+    },
+    {
+      "name": "n2parko",
+      "email": "kevin@segment.com"
+    },
+    {
+      "name": "notfelineit",
+      "email": "notfelineit@gmail.com"
+    },
+    {
+      "name": "jlee9595",
+      "email": "justin@segment.com"
+    },
+    {
+      "name": "segment-danielstjules",
+      "email": "danielst.jules@segment.com"
+    },
+    {
+      "name": "sperand-io",
+      "email": "chris@sperand.io"
+    },
+    {
+      "name": "albert.segment",
+      "email": "albert@segment.com"
+    },
+    {
+      "name": "tamarrow",
+      "email": "tamarrow@gmail.com"
+    },
+    {
+      "name": "ejcx",
+      "email": "evan@segment.com"
+    },
+    {
+      "name": "jeroenransijn",
+      "email": "jssrdesign@gmail.com"
+    },
+    {
+      "name": "joeybloggs",
+      "email": "dean@segment.com"
+    },
+    {
+      "name": "mynameiskir",
+      "email": "kir@mynameiskir.com"
+    },
+    {
+      "name": "maxence-charriere",
+      "email": "charriere@outlook.com"
+    },
+    {
+      "name": "boggsboggs",
+      "email": "john.boggs@segment.com"
+    },
+    {
+      "name": "codenameatlas",
+      "email": "anavarrete255@gmail.com"
+    },
+    {
+      "name": "nettofarah",
+      "email": "nettofarah@gmail.com"
+    },
+    {
+      "name": "myclamm",
+      "email": "mike@segment.com"
+    },
+    {
+      "name": "wdr",
+      "email": "robinsonwesleyd@gmail.com"
+    },
+    {
+      "name": "fouad",
+      "email": "fm@fouad.co"
+    },
+    {
+      "name": "achille-roussel",
+      "email": "achille.roussel@gmail.com"
+    },
+    {
+      "name": "peripheral",
+      "email": "peter.h.richmond@gmail.com"
+    },
+    {
+      "name": "calvinfo",
+      "email": "calvin@calv.info"
+    },
+    {
+      "name": "dfuentes",
+      "email": "daniel.richard.fuentes@gmail.com"
+    },
+    {
+      "name": "anoonan",
+      "email": "amnoonann@gmail.com"
+    },
+    {
+      "name": "nielst",
+      "email": "NTerwiesch@gmail.com"
+    },
+    {
+      "name": "ladanazita",
+      "email": "ladanazita@gmail.com"
+    },
+    {
+      "name": "rbranson",
+      "email": "rick@diodeware.com"
+    },
+    {
+      "name": "jedwatson",
+      "email": "jed.watson@me.com"
+    },
+    {
+      "name": "srthurman",
+      "email": "srthurman@gmail.com"
+    },
+    {
+      "name": "jgershen",
+      "email": "joe@segment.com"
+    },
+    {
+      "name": "ivolo",
+      "email": "ilya@segment.io"
+    },
+    {
+      "name": "ccnixon",
+      "email": "chrisnxn@gmail.com"
+    },
+    {
+      "name": "tidothegreat",
+      "email": "tido@segment.com"
+    },
+    {
+      "name": "chrisbuttery",
+      "email": "info@chrisbuttery.com"
+    },
+    {
+      "name": "lambtron",
+      "email": "andyjiang@gmail.com"
+    },
+    {
+      "name": "thehydroimpulse",
+      "email": "dnfagnan@gmail.com"
+    },
+    {
+      "name": "yields",
+      "email": "yields@icloud.com"
+    },
+    {
+      "name": "reinpk",
+      "email": "reinpk@gmail.com"
+    },
+    {
+      "name": "dominicbarnes",
+      "email": "dominic@dbarnes.info"
+    },
+    {
+      "name": "stevenmiller888",
+      "email": "stevenmiller888@me.com"
+    },
+    {
+      "name": "hanothan",
+      "email": "hankim813@gmail.com"
+    },
+    {
+      "name": "tejasmanohar",
+      "email": "me@tejas.io"
+    },
+    {
+      "name": "rowno",
+      "email": "rowno@webspirited.com"
+    },
+    {
+      "name": "stephenmathieson",
+      "email": "me@stephenmathieson.com"
+    },
+    {
+      "name": "segmentio",
+      "email": "tools@segment.com"
+    },
+    {
+      "name": "segment-admin",
       "email": "tools+npm@segment.com"
     }
   ],
@@ -3078,7 +3345,7 @@ module.exports={
   "scripts": {
     "test": "make test"
   },
-  "version": "3.0.0"
+  "version": "3.2.5"
 }
 
 },{}],29:[function(require,module,exports){
@@ -3349,7 +3616,10 @@ Segment.prototype.send = function(path, msg, fn) {
 
   // send
   if (this.options.retryQueue) {
-    var headers = { 'Content-Type': 'application/json' };
+    var headers = {
+      'Content-Type': 'application/json',
+      'x-api-key': this.options.apiKey
+    };
     this._lsqueue.addItem({
       url: url,
       headers: headers,
@@ -3371,7 +3641,10 @@ Segment.prototype.send = function(path, msg, fn) {
 
   function sendAjax() {
     // Beacons are sent as a text/plain POST
-    var headers = { 'Content-Type': 'application/json' };
+    var headers = {
+      'Content-Type': 'application/json',
+      'x-api-key': this.options.apiKey
+    };
     send(url, msg, headers, function(err, res) {
       self.debug('ajax sent %o, received %o', msg, arguments);
       if (err) return fn(err);
@@ -3590,7 +3863,7 @@ function getTld(domain) {
  */
 function noop() {}
 
-},{"@ndhoule/extend":10,"@ndhoule/keys":13,"@segment/ad-params":17,"@segment/analytics.js-integration":30,"@segment/localstorage-retry":43,"@segment/protocol":53,"@segment/send-json":54,"@segment/top-domain":56,"@segment/utm-params":57,"component-clone":60,"component-cookie":61,"json3":77,"spark-md5":102,"uuid":109,"yields-store":110}],30:[function(require,module,exports){
+},{"@ndhoule/extend":10,"@ndhoule/keys":13,"@segment/ad-params":17,"@segment/analytics.js-integration":30,"@segment/localstorage-retry":43,"@segment/protocol":53,"@segment/send-json":54,"@segment/top-domain":56,"@segment/utm-params":57,"component-clone":60,"component-cookie":61,"json3":77,"spark-md5":103,"uuid":110,"yields-store":111}],30:[function(require,module,exports){
 'use strict';
 
 /**
@@ -3655,7 +3928,7 @@ function createIntegration(name) {
 
 module.exports = createIntegration;
 
-},{"./protos":31,"./statics":32,"@ndhoule/clone":5,"@ndhoule/defaults":6,"@ndhoule/extend":10,"component-bind":59,"debug":34,"slug-component":101}],31:[function(require,module,exports){
+},{"./protos":31,"./statics":32,"@ndhoule/clone":5,"@ndhoule/defaults":6,"@ndhoule/extend":10,"component-bind":59,"debug":34,"slug-component":102}],31:[function(require,module,exports){
 'use strict';
 
 /**
@@ -4138,7 +4411,7 @@ function render(template, locals) {
   }, {}, template.attrs);
 }
 
-},{"@ndhoule/after":3,"@ndhoule/each":8,"@ndhoule/every":9,"@ndhoule/foldl":11,"@segment/fmt":38,"@segment/load-script":42,"analytics-events":33,"component-emitter":64,"is":76,"load-iframe":81,"next-tick":86,"to-no-case":104}],32:[function(require,module,exports){
+},{"@ndhoule/after":3,"@ndhoule/each":8,"@ndhoule/every":9,"@ndhoule/foldl":11,"@segment/fmt":38,"@segment/load-script":42,"analytics-events":33,"component-emitter":64,"is":76,"load-iframe":81,"next-tick":87,"to-no-case":105}],32:[function(require,module,exports){
 'use strict';
 
 /**
@@ -4420,14 +4693,14 @@ function useColors() {
 
   // is webkit? http://stackoverflow.com/a/16459606/376773
   // document is undefined in react-native: https://github.com/facebook/react-native/pull/1632
-  return (typeof document !== 'undefined' && document && document.documentElement && document.documentElement.style && document.documentElement.style.WebkitAppearance) ||
+  return (typeof document !== 'undefined' && document.documentElement && document.documentElement.style && document.documentElement.style.WebkitAppearance) ||
     // is firebug? http://stackoverflow.com/a/398120/376773
-    (typeof window !== 'undefined' && window && window.console && (window.console.firebug || (window.console.exception && window.console.table))) ||
+    (typeof window !== 'undefined' && window.console && (window.console.firebug || (window.console.exception && window.console.table))) ||
     // is firefox >= v31?
     // https://developer.mozilla.org/en-US/docs/Tools/Web_Console#Styling_messages
-    (typeof navigator !== 'undefined' && navigator && navigator.userAgent && navigator.userAgent.toLowerCase().match(/firefox\/(\d+)/) && parseInt(RegExp.$1, 10) >= 31) ||
+    (typeof navigator !== 'undefined' && navigator.userAgent && navigator.userAgent.toLowerCase().match(/firefox\/(\d+)/) && parseInt(RegExp.$1, 10) >= 31) ||
     // double check webkit in userAgent just in case we are in a worker
-    (typeof navigator !== 'undefined' && navigator && navigator.userAgent && navigator.userAgent.toLowerCase().match(/applewebkit\/(\d+)/));
+    (typeof navigator !== 'undefined' && navigator.userAgent && navigator.userAgent.toLowerCase().match(/applewebkit\/(\d+)/));
 }
 
 /**
@@ -4559,7 +4832,7 @@ function localstorage() {
 }
 
 }).call(this,require('_process'))
-},{"./debug":35,"_process":88}],35:[function(require,module,exports){
+},{"./debug":35,"_process":89}],35:[function(require,module,exports){
 
 /**
  * This is the common logic for both the Node.js and web browser
@@ -4800,7 +5073,7 @@ function encode(input) {
 
     return output;
 }
-},{"utf8-encode":107}],37:[function(require,module,exports){
+},{"utf8-encode":108}],37:[function(require,module,exports){
 'use strict';
 
 /**
@@ -4925,6 +5198,11 @@ function traverse(input, strict) {
  */
 
 function object(obj, strict) {
+  // 'each' utility uses obj.length to check whether the obj is array. To avoid incorrect classification, wrap call to 'each' with rename of obj.length
+  if (obj.length && typeof obj.length === 'number' && !(obj.length - 1 in obj)) { // cross browser compatible way of checking has length and is not array
+    obj.lengthNonArray = obj.length;
+    delete obj.length;
+  }
   each(obj, function(key, val) {
     if (isodate.is(val, strict)) {
       obj[key] = isodate.parse(val);
@@ -4932,6 +5210,11 @@ function object(obj, strict) {
       traverse(val, strict);
     }
   });
+  // restore obj.length if it was renamed
+  if (obj.lengthNonArray) {
+    obj.length = obj.lengthNonArray;
+    delete obj.lengthNonArray;
+  }
   return obj;
 }
 
@@ -5026,6 +5309,9 @@ exports.parse = function(iso) {
  */
 
 exports.is = function(string, strict) {
+  if (typeof string !== 'string') {
+    return false;
+  }
   if (strict && (/^\d{4}-\d{2}-\d{2}/).test(string) === false) {
     return false;
   }
@@ -5104,7 +5390,7 @@ function loadScript(options, cb) {
 
 module.exports = loadScript;
 
-},{"component-type":69,"next-tick":86,"script-onload":89}],43:[function(require,module,exports){
+},{"component-type":69,"next-tick":87,"script-onload":90}],43:[function(require,module,exports){
 'use strict';
 
 var uuid = require('uuid').v4;
@@ -5575,7 +5861,7 @@ module.exports = uuid;
 },{"./v1":50,"./v4":51}],48:[function(require,module,exports){
 /**
  * Convert array of 16 byte values to UUID string format of the form:
- * XXXXXXXX-XXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX
+ * XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX
  */
 var byteToHex = [];
 for (var i = 0; i < 256; ++i) {
@@ -5585,7 +5871,7 @@ for (var i = 0; i < 256; ++i) {
 function bytesToUuid(buf, offset) {
   var i = offset || 0;
   var bth = byteToHex;
-  return  bth[buf[i++]] + bth[buf[i++]] +
+  return bth[buf[i++]] + bth[buf[i++]] +
           bth[buf[i++]] + bth[buf[i++]] + '-' +
           bth[buf[i++]] + bth[buf[i++]] + '-' +
           bth[buf[i++]] + bth[buf[i++]] + '-' +
@@ -5608,7 +5894,7 @@ var rng;
 var crypto = global.crypto || global.msCrypto; // for IE 11
 if (crypto && crypto.getRandomValues) {
   // WHATWG crypto RNG - http://wiki.whatwg.org/wiki/Crypto
-  var rnds8 = new Uint8Array(16);
+  var rnds8 = new Uint8Array(16); // eslint-disable-line no-undef
   rng = function whatwgRNG() {
     crypto.getRandomValues(rnds8);
     return rnds8;
@@ -5620,7 +5906,7 @@ if (!rng) {
   //
   // If all else fails, use Math.random().  It's fast, but is of unspecified
   // quality.
-  var  rnds = new Array(16);
+  var rnds = new Array(16);
   rng = function() {
     for (var i = 0, r; i < 16; i++) {
       if ((i & 0x03) === 0) r = Math.random() * 0x100000000;
@@ -5635,9 +5921,6 @@ module.exports = rng;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{}],50:[function(require,module,exports){
-// Unique ID creation requires a high quality random # generator.  We feature
-// detect to determine the best RNG source, normalizing to a function that
-// returns 128-bits of randomness, since that's what's usually required
 var rng = require('./lib/rng');
 var bytesToUuid = require('./lib/bytesToUuid');
 
@@ -6676,7 +6959,7 @@ function array(obj, fn, ctx) {
   }
 }
 
-},{"component-type":63,"to-function":103,"type":63}],63:[function(require,module,exports){
+},{"component-type":63,"to-function":104,"type":63}],63:[function(require,module,exports){
 
 /**
  * toString ref.
@@ -7105,7 +7388,7 @@ exports.stringify = function(obj){
   return pairs.join('&');
 };
 
-},{"trim":105,"type":68}],68:[function(require,module,exports){
+},{"trim":106,"type":68}],68:[function(require,module,exports){
 /**
  * toString ref.
  */
@@ -9384,7 +9667,7 @@ function jsonp(url, opts, fn){
 
 },{"debug":79}],79:[function(require,module,exports){
 arguments[4][34][0].apply(exports,arguments)
-},{"./debug":80,"_process":88,"dup":34}],80:[function(require,module,exports){
+},{"./debug":80,"_process":89,"dup":34}],80:[function(require,module,exports){
 arguments[4][35][0].apply(exports,arguments)
 },{"dup":35,"ms":82}],81:[function(require,module,exports){
 /**
@@ -9448,16 +9731,16 @@ module.exports = function loadIframe(options, fn){
   return iframe;
 };
 
-},{"is":76,"next-tick":86,"script-onload":89}],82:[function(require,module,exports){
+},{"is":76,"next-tick":87,"script-onload":90}],82:[function(require,module,exports){
 /**
  * Helpers.
  */
 
-var s = 1000
-var m = s * 60
-var h = m * 60
-var d = h * 24
-var y = d * 365.25
+var s = 1000;
+var m = s * 60;
+var h = m * 60;
+var d = h * 24;
+var y = d * 365.25;
 
 /**
  * Parse or format the given `val`.
@@ -9473,18 +9756,19 @@ var y = d * 365.25
  * @api public
  */
 
-module.exports = function (val, options) {
-  options = options || {}
-  var type = typeof val
+module.exports = function(val, options) {
+  options = options || {};
+  var type = typeof val;
   if (type === 'string' && val.length > 0) {
-    return parse(val)
+    return parse(val);
   } else if (type === 'number' && isNaN(val) === false) {
-    return options.long ?
-			fmtLong(val) :
-			fmtShort(val)
+    return options.long ? fmtLong(val) : fmtShort(val);
   }
-  throw new Error('val is not a non-empty string or a valid number. val=' + JSON.stringify(val))
-}
+  throw new Error(
+    'val is not a non-empty string or a valid number. val=' +
+      JSON.stringify(val)
+  );
+};
 
 /**
  * Parse the given `str` and return milliseconds.
@@ -9495,53 +9779,55 @@ module.exports = function (val, options) {
  */
 
 function parse(str) {
-  str = String(str)
-  if (str.length > 10000) {
-    return
+  str = String(str);
+  if (str.length > 100) {
+    return;
   }
-  var match = /^((?:\d+)?\.?\d+) *(milliseconds?|msecs?|ms|seconds?|secs?|s|minutes?|mins?|m|hours?|hrs?|h|days?|d|years?|yrs?|y)?$/i.exec(str)
+  var match = /^((?:\d+)?\.?\d+) *(milliseconds?|msecs?|ms|seconds?|secs?|s|minutes?|mins?|m|hours?|hrs?|h|days?|d|years?|yrs?|y)?$/i.exec(
+    str
+  );
   if (!match) {
-    return
+    return;
   }
-  var n = parseFloat(match[1])
-  var type = (match[2] || 'ms').toLowerCase()
+  var n = parseFloat(match[1]);
+  var type = (match[2] || 'ms').toLowerCase();
   switch (type) {
     case 'years':
     case 'year':
     case 'yrs':
     case 'yr':
     case 'y':
-      return n * y
+      return n * y;
     case 'days':
     case 'day':
     case 'd':
-      return n * d
+      return n * d;
     case 'hours':
     case 'hour':
     case 'hrs':
     case 'hr':
     case 'h':
-      return n * h
+      return n * h;
     case 'minutes':
     case 'minute':
     case 'mins':
     case 'min':
     case 'm':
-      return n * m
+      return n * m;
     case 'seconds':
     case 'second':
     case 'secs':
     case 'sec':
     case 's':
-      return n * s
+      return n * s;
     case 'milliseconds':
     case 'millisecond':
     case 'msecs':
     case 'msec':
     case 'ms':
-      return n
+      return n;
     default:
-      return undefined
+      return undefined;
   }
 }
 
@@ -9555,18 +9841,18 @@ function parse(str) {
 
 function fmtShort(ms) {
   if (ms >= d) {
-    return Math.round(ms / d) + 'd'
+    return Math.round(ms / d) + 'd';
   }
   if (ms >= h) {
-    return Math.round(ms / h) + 'h'
+    return Math.round(ms / h) + 'h';
   }
   if (ms >= m) {
-    return Math.round(ms / m) + 'm'
+    return Math.round(ms / m) + 'm';
   }
   if (ms >= s) {
-    return Math.round(ms / s) + 's'
+    return Math.round(ms / s) + 's';
   }
-  return ms + 'ms'
+  return ms + 'ms';
 }
 
 /**
@@ -9582,7 +9868,7 @@ function fmtLong(ms) {
     plural(ms, h, 'hour') ||
     plural(ms, m, 'minute') ||
     plural(ms, s, 'second') ||
-    ms + ' ms'
+    ms + ' ms';
 }
 
 /**
@@ -9591,12 +9877,12 @@ function fmtLong(ms) {
 
 function plural(ms, n, name) {
   if (ms < n) {
-    return
+    return;
   }
   if (ms < n * 1.5) {
-    return Math.floor(ms / n) + ' ' + name
+    return Math.floor(ms / n) + ' ' + name;
   }
-  return Math.ceil(ms / n) + ' ' + name + 's'
+  return Math.ceil(ms / n) + ' ' + name + 's';
 }
 
 },{}],83:[function(require,module,exports){
@@ -9644,7 +9930,7 @@ function toMs(num) {
   return num;
 }
 
-},{"./milliseconds":84,"./seconds":85,"@segment/isodate":41,"is":76}],84:[function(require,module,exports){
+},{"./milliseconds":84,"./seconds":85,"@segment/isodate":86,"is":76}],84:[function(require,module,exports){
 'use strict';
 
 /**
@@ -9709,6 +9995,84 @@ exports.parse = function(seconds) {
 };
 
 },{}],86:[function(require,module,exports){
+'use strict';
+
+/**
+ * Matcher, slightly modified from:
+ *
+ * https://github.com/csnover/js-iso8601/blob/lax/iso8601.js
+ */
+
+var matcher = /^(\d{4})(?:-?(\d{2})(?:-?(\d{2}))?)?(?:([ T])(\d{2}):?(\d{2})(?::?(\d{2})(?:[,\.](\d{1,}))?)?(?:(Z)|([+\-])(\d{2})(?::?(\d{2}))?)?)?$/;
+
+/**
+ * Convert an ISO date string to a date. Fallback to native `Date.parse`.
+ *
+ * https://github.com/csnover/js-iso8601/blob/lax/iso8601.js
+ *
+ * @param {String} iso
+ * @return {Date}
+ */
+
+exports.parse = function(iso) {
+  var numericKeys = [1, 5, 6, 7, 11, 12];
+  var arr = matcher.exec(iso);
+  var offset = 0;
+
+  // fallback to native parsing
+  if (!arr) {
+    return new Date(iso);
+  }
+
+  /* eslint-disable no-cond-assign */
+  // remove undefined values
+  for (var i = 0, val; val = numericKeys[i]; i++) {
+    arr[val] = parseInt(arr[val], 10) || 0;
+  }
+  /* eslint-enable no-cond-assign */
+
+  // allow undefined days and months
+  arr[2] = parseInt(arr[2], 10) || 1;
+  arr[3] = parseInt(arr[3], 10) || 1;
+
+  // month is 0-11
+  arr[2]--;
+
+  // allow abitrary sub-second precision
+  arr[8] = arr[8] ? (arr[8] + '00').substring(0, 3) : 0;
+
+  // apply timezone if one exists
+  if (arr[4] === ' ') {
+    offset = new Date().getTimezoneOffset();
+  } else if (arr[9] !== 'Z' && arr[10]) {
+    offset = arr[11] * 60 + arr[12];
+    if (arr[10] === '+') {
+      offset = 0 - offset;
+    }
+  }
+
+  var millis = Date.UTC(arr[1], arr[2], arr[3], arr[5], arr[6] + offset, arr[7], arr[8]);
+  return new Date(millis);
+};
+
+
+/**
+ * Checks whether a `string` is an ISO date string. `strict` mode requires that
+ * the date string at least have a year, month and date.
+ *
+ * @param {String} string
+ * @param {Boolean} strict
+ * @return {Boolean}
+ */
+
+exports.is = function(string, strict) {
+  if (strict && (/^\d{4}-\d{2}-\d{2}/).test(string) === false) {
+    return false;
+  }
+  return matcher.test(string);
+};
+
+},{}],87:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -9776,7 +10140,7 @@ module.exports = (function () {
 }());
 
 }).call(this,require('_process'))
-},{"_process":88}],87:[function(require,module,exports){
+},{"_process":89}],88:[function(require,module,exports){
 
 var identity = function(_){ return _; };
 
@@ -9930,7 +10294,7 @@ function isFunction(val) {
   return typeof val === 'function';
 }
 
-},{}],88:[function(require,module,exports){
+},{}],89:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 
@@ -10116,7 +10480,7 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],89:[function(require,module,exports){
+},{}],90:[function(require,module,exports){
 
 // https://github.com/thirdpartyjs/thirdpartyjs-code/blob/master/examples/templates/02/loading-files/index.html
 
@@ -10171,7 +10535,7 @@ function attach(el, fn){
   });
 }
 
-},{}],90:[function(require,module,exports){
+},{}],91:[function(require,module,exports){
 'use strict';
 
 /**
@@ -10210,7 +10574,7 @@ module.exports = function(proto) {
   }
 };
 
-},{"obj-case":87}],91:[function(require,module,exports){
+},{"obj-case":88}],92:[function(require,module,exports){
 'use strict';
 
 /**
@@ -10281,7 +10645,7 @@ Alias.prototype.to = Alias.prototype.userId;
 
 module.exports = Alias;
 
-},{"./facade":92,"./utils":100}],92:[function(require,module,exports){
+},{"./facade":93,"./utils":101}],93:[function(require,module,exports){
 'use strict';
 
 var address = require('./address');
@@ -10595,7 +10959,7 @@ function transform(obj) {
 
 module.exports = Facade;
 
-},{"./address":90,"./is-enabled":96,"./utils":100,"@segment/isodate-traverse":40,"new-date":83,"obj-case":87}],93:[function(require,module,exports){
+},{"./address":91,"./is-enabled":97,"./utils":101,"@segment/isodate-traverse":40,"new-date":83,"obj-case":88}],94:[function(require,module,exports){
 'use strict';
 
 /**
@@ -10716,7 +11080,7 @@ Group.prototype.properties = function() {
 
 module.exports = Group;
 
-},{"./facade":92,"./utils":100,"is-email":75,"new-date":83}],94:[function(require,module,exports){
+},{"./facade":93,"./utils":101,"is-email":75,"new-date":83}],95:[function(require,module,exports){
 'use strict';
 
 var Facade = require('./facade');
@@ -10815,6 +11179,15 @@ Identify.prototype.companyCreated = function() {
   if (created) {
     return newDate(created);
   }
+};
+
+/**
+ * Get the company name.
+ *
+ * @return {String|undefined}
+ */
+Identify.prototype.companyName = function() {
+  return this.proxy('traits.company.name');
 };
 
 /**
@@ -10961,7 +11334,7 @@ Identify.prototype.birthday = Facade.proxy('traits.birthday');
 
 module.exports = Identify;
 
-},{"./facade":92,"./utils":100,"is-email":75,"new-date":83,"obj-case":87,"trim":105}],95:[function(require,module,exports){
+},{"./facade":93,"./utils":101,"is-email":75,"new-date":83,"obj-case":88,"trim":106}],96:[function(require,module,exports){
 'use strict';
 
 var Facade = require('./facade');
@@ -10983,7 +11356,7 @@ Facade.Screen = require('./screen');
 
 module.exports = Facade;
 
-},{"./alias":91,"./facade":92,"./group":93,"./identify":94,"./page":97,"./screen":98,"./track":99}],96:[function(require,module,exports){
+},{"./alias":92,"./facade":93,"./group":94,"./identify":95,"./page":98,"./screen":99,"./track":100}],97:[function(require,module,exports){
 'use strict';
 
 /**
@@ -11006,7 +11379,7 @@ module.exports = function(integration) {
   return !disabled[integration];
 };
 
-},{}],97:[function(require,module,exports){
+},{}],98:[function(require,module,exports){
 'use strict';
 
 var inherit = require('./utils').inherit;
@@ -11155,7 +11528,7 @@ Page.prototype.track = function(name) {
 
 module.exports = Page;
 
-},{"./facade":92,"./track":99,"./utils":100,"is-email":75}],98:[function(require,module,exports){
+},{"./facade":93,"./track":100,"./utils":101,"is-email":75}],99:[function(require,module,exports){
 'use strict';
 
 var inherit = require('./utils').inherit;
@@ -11227,7 +11600,7 @@ Screen.prototype.track = function(name) {
 
 module.exports = Screen;
 
-},{"./page":97,"./track":99,"./utils":100}],99:[function(require,module,exports){
+},{"./page":98,"./track":100,"./utils":101}],100:[function(require,module,exports){
 'use strict';
 
 var inherit = require('./utils').inherit;
@@ -11363,17 +11736,19 @@ Track.prototype.plan = Facade.proxy('properties.plan');
  */
 Track.prototype.subtotal = function() {
   var subtotal = get(this.properties(), 'subtotal');
-  var total = this.total();
+  var total = this.total() || this.revenue();
 
   if (subtotal) return subtotal;
   if (!total) return 0;
 
-  var n = this.tax();
-  if (n) total -= n;
-  n = this.shipping();
-  if (n) total -= n;
-  n = this.discount();
-  if (n) total += n;
+  if (this.total()) {
+    var n = this.tax();
+    if (n) total -= n;
+    n = this.shipping();
+    if (n) total -= n;
+    n = this.discount();
+    if (n) total += n;
+  }
 
   return total;
 };
@@ -11552,14 +11927,14 @@ function currency(val) {
 
 module.exports = Track;
 
-},{"./facade":92,"./identify":94,"./utils":100,"is-email":75,"obj-case":87}],100:[function(require,module,exports){
+},{"./facade":93,"./identify":95,"./utils":101,"is-email":75,"obj-case":88}],101:[function(require,module,exports){
 'use strict';
 
 exports.inherit = require('inherits');
 exports.clone = require('@ndhoule/clone');
 exports.type = require('type-component');
 
-},{"@ndhoule/clone":5,"inherits":74,"type-component":106}],101:[function(require,module,exports){
+},{"@ndhoule/clone":5,"inherits":74,"type-component":107}],102:[function(require,module,exports){
 
 /**
  * Generate a slug from the given `str`.
@@ -11584,7 +11959,7 @@ module.exports = function (str, options) {
     .replace(/ +/g, options.separator || '-')
 };
 
-},{}],102:[function(require,module,exports){
+},{}],103:[function(require,module,exports){
 (function (factory) {
     if (typeof exports === 'object') {
         // Node/CommonJS
@@ -12289,7 +12664,7 @@ module.exports = function (str, options) {
     return SparkMD5;
 }));
 
-},{}],103:[function(require,module,exports){
+},{}],104:[function(require,module,exports){
 
 /**
  * Module Dependencies
@@ -12443,7 +12818,7 @@ function stripNested (prop, str, val) {
   });
 }
 
-},{"component-props":66,"props":66}],104:[function(require,module,exports){
+},{"component-props":66,"props":66}],105:[function(require,module,exports){
 
 /**
  * Expose `toNoCase`.
@@ -12515,7 +12890,7 @@ function uncamelize (string) {
     return previous + ' ' + uppers.toLowerCase().split('').join(' ');
   });
 }
-},{}],105:[function(require,module,exports){
+},{}],106:[function(require,module,exports){
 
 exports = module.exports = trim;
 
@@ -12531,7 +12906,7 @@ exports.right = function(str){
   return str.replace(/\s*$/, '');
 };
 
-},{}],106:[function(require,module,exports){
+},{}],107:[function(require,module,exports){
 
 /**
  * toString ref.
@@ -12563,7 +12938,7 @@ module.exports = function(val){
   return typeof val;
 };
 
-},{}],107:[function(require,module,exports){
+},{}],108:[function(require,module,exports){
 module.exports = encode;
 
 function encode(string) {
@@ -12591,7 +12966,7 @@ function encode(string) {
 
     return utftext;
 }
-},{}],108:[function(require,module,exports){
+},{}],109:[function(require,module,exports){
 (function (global){
 
 var rng;
@@ -12627,7 +13002,7 @@ module.exports = rng;
 
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],109:[function(require,module,exports){
+},{}],110:[function(require,module,exports){
 //     uuid.js
 //
 //     Copyright (c) 2010-2012 Robert Kieffer
@@ -12812,7 +13187,7 @@ uuid.unparse = unparse;
 
 module.exports = uuid;
 
-},{"./rng":108}],110:[function(require,module,exports){
+},{"./rng":109}],111:[function(require,module,exports){
 
 /**
  * dependencies.
@@ -12907,7 +13282,7 @@ function all(){
   return ret;
 }
 
-},{"each":62,"unserialize":111}],111:[function(require,module,exports){
+},{"each":62,"unserialize":112}],112:[function(require,module,exports){
 
 /**
  * Unserialize the given "stringified" javascript.
@@ -12924,7 +13299,7 @@ module.exports = function(val){
   }
 };
 
-},{}],112:[function(require,module,exports){
+},{}],113:[function(require,module,exports){
 module.exports={
   "name": "@segment/analytics.js",
   "author": "Segment <friends@segment.com>",
@@ -12954,7 +13329,7 @@ module.exports={
   "dependencies": {
     "@segment/analytics.js-core": "^3.0.0",
     "@segment/analytics.js-integration": "^3.1.0",
-    "analytics.js-integration-findhotel": "git://github.com/FindHotel/analytics.js-integration-findhotel.git#39fbd41a47f3ebfd5adce1d74e830726edbe8733"
+    "analytics.js-integration-findhotel": "git://github.com/FindHotel/analytics.js-integration-findhotel.git#0857658825c4767b4d95bcc3c184a1b9f9057349"
   },
   "devDependencies": {
     "@segment/eslint-config": "^3.1.1",
