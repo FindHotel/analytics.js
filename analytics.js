@@ -35,7 +35,7 @@ Object.keys(Integrations).forEach(function(name) {
   analytics.use(Integrations[name]);
 });
 
-},{"../package.json":113,"./integrations":2,"@segment/analytics.js-core":22}],2:[function(require,module,exports){
+},{"../package.json":123,"./integrations":2,"@segment/analytics.js-core":22}],2:[function(require,module,exports){
 /* eslint quote-props: off */
 'use strict';
 
@@ -45,10 +45,11 @@ Object.keys(Integrations).forEach(function(name) {
  Make sure the integrations added are also installed and saved in the package.json
  */
 module.exports = {
-  'findhotel': require('@segment/analytics.js-integration-segmentio')
+  'findhotel': require('@segment/analytics.js-integration-segmentio'),
+  'google-tag-manager': require('@segment/analytics.js-integration-google-tag-manager')
 };
 
-},{"@segment/analytics.js-integration-segmentio":29}],3:[function(require,module,exports){
+},{"@segment/analytics.js-integration-google-tag-manager":29,"@segment/analytics.js-integration-segmentio":30}],3:[function(require,module,exports){
 'use strict';
 
 /*
@@ -340,7 +341,7 @@ var clone = function clone(obj) {
 
 module.exports = clone;
 
-},{"component-type":69}],6:[function(require,module,exports){
+},{"component-type":76}],6:[function(require,module,exports){
 'use strict';
 
 /*
@@ -1276,7 +1277,7 @@ function ads(query) {
 
 module.exports = ads;
 
-},{"component-querystring":67}],18:[function(require,module,exports){
+},{"component-querystring":74}],18:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -2003,7 +2004,7 @@ module.exports.memory = memory;
 module.exports.store = store;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./cookie":19,"./group":21,"./memory":23,"./normalize":24,"./pageDefaults":25,"./store":26,"./user":27,"@ndhoule/after":3,"@ndhoule/clone":5,"@ndhoule/defaults":6,"@ndhoule/each":8,"@ndhoule/foldl":11,"@ndhoule/keys":13,"@ndhoule/pick":15,"@segment/is-meta":39,"@segment/prevent-default":52,"bind-all":58,"component-emitter":64,"component-event":65,"component-querystring":67,"component-type":69,"debug":71,"is":76,"next-tick":87,"segmentio-facade":96}],19:[function(require,module,exports){
+},{"./cookie":19,"./group":21,"./memory":23,"./normalize":24,"./pageDefaults":25,"./store":26,"./user":27,"@ndhoule/after":3,"@ndhoule/clone":5,"@ndhoule/defaults":6,"@ndhoule/each":8,"@ndhoule/foldl":11,"@ndhoule/keys":13,"@ndhoule/pick":15,"@segment/is-meta":45,"@segment/prevent-default":58,"bind-all":65,"component-emitter":71,"component-event":72,"component-querystring":74,"component-type":76,"debug":78,"is":86,"next-tick":97,"segmentio-facade":106}],19:[function(require,module,exports){
 'use strict';
 
 /**
@@ -2137,7 +2138,7 @@ module.exports = bindAll(new Cookie());
 
 module.exports.Cookie = Cookie;
 
-},{"@ndhoule/clone":5,"@ndhoule/defaults":6,"@segment/top-domain":56,"bind-all":58,"component-cookie":61,"debug":71,"json3":77}],20:[function(require,module,exports){
+},{"@ndhoule/clone":5,"@ndhoule/defaults":6,"@segment/top-domain":62,"bind-all":65,"component-cookie":68,"debug":78,"json3":87}],20:[function(require,module,exports){
 'use strict';
 
 /*
@@ -2380,7 +2381,7 @@ Entity.prototype.load = function() {
 };
 
 
-},{"./cookie":19,"./memory":23,"./store":26,"@ndhoule/clone":5,"@ndhoule/defaults":6,"@ndhoule/extend":10,"@segment/isodate-traverse":40,"debug":71}],21:[function(require,module,exports){
+},{"./cookie":19,"./memory":23,"./store":26,"@ndhoule/clone":5,"@ndhoule/defaults":6,"@ndhoule/extend":10,"@segment/isodate-traverse":46,"debug":78}],21:[function(require,module,exports){
 'use strict';
 
 /*
@@ -2440,7 +2441,7 @@ module.exports = bindAll(new Group());
 
 module.exports.Group = Group;
 
-},{"./entity":20,"bind-all":58,"debug":71,"inherits":74}],22:[function(require,module,exports){
+},{"./entity":20,"bind-all":65,"debug":78,"inherits":84}],22:[function(require,module,exports){
 'use strict';
 
 /**
@@ -2533,7 +2534,7 @@ Memory.prototype.remove = function(key) {
   return true;
 };
 
-},{"@ndhoule/clone":5,"bind-all":58}],24:[function(require,module,exports){
+},{"@ndhoule/clone":5,"bind-all":65}],24:[function(require,module,exports){
 'use strict';
 
 /**
@@ -2626,7 +2627,7 @@ function normalize(msg, list) {
   }
 }
 
-},{"@ndhoule/defaults":6,"@ndhoule/each":8,"@ndhoule/includes":12,"@ndhoule/map":14,"component-type":69,"debug":71}],25:[function(require,module,exports){
+},{"@ndhoule/defaults":6,"@ndhoule/each":8,"@ndhoule/includes":12,"@ndhoule/map":14,"component-type":76,"debug":78}],25:[function(require,module,exports){
 'use strict';
 
 /*
@@ -2690,7 +2691,7 @@ function canonicalUrl(search) {
 
 module.exports = pageDefaults;
 
-},{"@ndhoule/includes":12,"@segment/canonical":37,"component-url":70}],26:[function(require,module,exports){
+},{"@ndhoule/includes":12,"@segment/canonical":43,"component-url":77}],26:[function(require,module,exports){
 'use strict';
 
 /*
@@ -2780,7 +2781,7 @@ module.exports = bindAll(new Store());
 
 module.exports.Store = Store;
 
-},{"@ndhoule/defaults":6,"@segment/store":55,"bind-all":58}],27:[function(require,module,exports){
+},{"@ndhoule/defaults":6,"@segment/store":61,"bind-all":65}],27:[function(require,module,exports){
 'use strict';
 
 /*
@@ -2958,54 +2959,37 @@ module.exports = bindAll(new User());
 
 module.exports.User = User;
 
-},{"./cookie":19,"./entity":20,"bind-all":58,"component-cookie":61,"debug":71,"inherits":74,"uuid":110}],28:[function(require,module,exports){
+},{"./cookie":19,"./entity":20,"bind-all":65,"component-cookie":68,"debug":78,"inherits":84,"uuid":120}],28:[function(require,module,exports){
 module.exports={
   "_args": [
     [
-      {
-        "raw": "@segment/analytics.js-core@^3.0.0",
-        "scope": "@segment",
-        "escapedName": "@segment%2fanalytics.js-core",
-        "name": "@segment/analytics.js-core",
-        "rawSpec": "^3.0.0",
-        "spec": ">=3.0.0 <4.0.0",
-        "type": "range"
-      },
-      "/Users/ali/find_hotel/analytics.js"
+      "@segment/analytics.js-core@3.2.5",
+      "/Users/jopdeklein/Development/analytics.js"
     ]
   ],
-  "_from": "@segment/analytics.js-core@>=3.0.0 <4.0.0",
+  "_from": "@segment/analytics.js-core@3.2.5",
   "_id": "@segment/analytics.js-core@3.2.5",
-  "_inCache": true,
+  "_inBundle": false,
+  "_integrity": "sha1-269R1OsXop8y6rX/8+ZVqH8j6lI=",
   "_location": "/@segment/analytics.js-core",
-  "_nodeVersion": "4.8.6",
-  "_npmOperationalInternal": {
-    "host": "s3://npm-registry-packages",
-    "tmp": "tmp/analytics.js-core-3.2.5.tgz_1510261887248_0.4549919664859772"
-  },
-  "_npmUser": {
-    "name": "segment-admin",
-    "email": "tools+npm@segment.com"
-  },
-  "_npmVersion": "2.15.11",
   "_phantomChildren": {},
   "_requested": {
-    "raw": "@segment/analytics.js-core@^3.0.0",
-    "scope": "@segment",
-    "escapedName": "@segment%2fanalytics.js-core",
+    "type": "version",
+    "registry": true,
+    "raw": "@segment/analytics.js-core@3.2.5",
     "name": "@segment/analytics.js-core",
-    "rawSpec": "^3.0.0",
-    "spec": ">=3.0.0 <4.0.0",
-    "type": "range"
+    "escapedName": "@segment%2fanalytics.js-core",
+    "scope": "@segment",
+    "rawSpec": "3.2.5",
+    "saveSpec": null,
+    "fetchSpec": "3.2.5"
   },
   "_requiredBy": [
     "/"
   ],
   "_resolved": "https://registry.npmjs.org/@segment/analytics.js-core/-/analytics.js-core-3.2.5.tgz",
-  "_shasum": "dbaf51d4eb17a29f32eab5fff3e655a87f23ea52",
-  "_shrinkwrap": null,
-  "_spec": "@segment/analytics.js-core@^3.0.0",
-  "_where": "/Users/ali/find_hotel/analytics.js",
+  "_spec": "3.2.5",
+  "_where": "/Users/jopdeklein/Development/analytics.js",
   "author": {
     "name": "Segment",
     "email": "friends@segment.com"
@@ -3074,12 +3058,6 @@ module.exports={
     "sinon": "^1.7.3",
     "watchify": "^3.7.0"
   },
-  "directories": {},
-  "dist": {
-    "shasum": "dbaf51d4eb17a29f32eab5fff3e655a87f23ea52",
-    "tarball": "https://registry.npmjs.org/@segment/analytics.js-core/-/analytics.js-core-3.2.5.tgz"
-  },
-  "gitHead": "100e85cb40ed3a9e518ac221db8b25ad77264750",
   "homepage": "https://github.com/segmentio/analytics.js-core#readme",
   "keywords": [
     "analytics",
@@ -3089,255 +3067,7 @@ module.exports={
   ],
   "license": "SEE LICENSE IN LICENSE",
   "main": "lib/index.js",
-  "maintainers": [
-    {
-      "name": "josh_segment",
-      "email": "josh@segment.com"
-    },
-    {
-      "name": "atrivedi1",
-      "email": "akash@segment.com"
-    },
-    {
-      "name": "segment-scott",
-      "email": "scott@segment.com"
-    },
-    {
-      "name": "emily.luckette",
-      "email": "emily@segment.com"
-    },
-    {
-      "name": "xagos",
-      "email": "xavier.agostini@mail.mcgill.ca"
-    },
-    {
-      "name": "andreiko_ru",
-      "email": "mail@andreiko.ru"
-    },
-    {
-      "name": "f2prateek",
-      "email": "f2prateek@gmail.com"
-    },
-    {
-      "name": "dscrobonia",
-      "email": "davidscrobonia@gmail.com"
-    },
-    {
-      "name": "emilio-gomez-lavin",
-      "email": "emilio@segment.com"
-    },
-    {
-      "name": "vdemedes",
-      "email": "vdemedes@gmail.com"
-    },
-    {
-      "name": "sahilp",
-      "email": "sahil@segment.com"
-    },
-    {
-      "name": "segment-ulysse",
-      "email": "ulysse@segment.com"
-    },
-    {
-      "name": "erickimsegment",
-      "email": "eric@segment.com"
-    },
-    {
-      "name": "segment-andy-yeo",
-      "email": "andy.yeo@segment.com"
-    },
-    {
-      "name": "segment-maggie-chu",
-      "email": "maggie@segment.com"
-    },
-    {
-      "name": "systemizer",
-      "email": "robmcqn@gmail.com"
-    },
-    {
-      "name": "n2parko",
-      "email": "kevin@segment.com"
-    },
-    {
-      "name": "notfelineit",
-      "email": "notfelineit@gmail.com"
-    },
-    {
-      "name": "jlee9595",
-      "email": "justin@segment.com"
-    },
-    {
-      "name": "segment-danielstjules",
-      "email": "danielst.jules@segment.com"
-    },
-    {
-      "name": "sperand-io",
-      "email": "chris@sperand.io"
-    },
-    {
-      "name": "albert.segment",
-      "email": "albert@segment.com"
-    },
-    {
-      "name": "tamarrow",
-      "email": "tamarrow@gmail.com"
-    },
-    {
-      "name": "ejcx",
-      "email": "evan@segment.com"
-    },
-    {
-      "name": "jeroenransijn",
-      "email": "jssrdesign@gmail.com"
-    },
-    {
-      "name": "joeybloggs",
-      "email": "dean@segment.com"
-    },
-    {
-      "name": "mynameiskir",
-      "email": "kir@mynameiskir.com"
-    },
-    {
-      "name": "maxence-charriere",
-      "email": "charriere@outlook.com"
-    },
-    {
-      "name": "boggsboggs",
-      "email": "john.boggs@segment.com"
-    },
-    {
-      "name": "codenameatlas",
-      "email": "anavarrete255@gmail.com"
-    },
-    {
-      "name": "nettofarah",
-      "email": "nettofarah@gmail.com"
-    },
-    {
-      "name": "myclamm",
-      "email": "mike@segment.com"
-    },
-    {
-      "name": "wdr",
-      "email": "robinsonwesleyd@gmail.com"
-    },
-    {
-      "name": "fouad",
-      "email": "fm@fouad.co"
-    },
-    {
-      "name": "achille-roussel",
-      "email": "achille.roussel@gmail.com"
-    },
-    {
-      "name": "peripheral",
-      "email": "peter.h.richmond@gmail.com"
-    },
-    {
-      "name": "calvinfo",
-      "email": "calvin@calv.info"
-    },
-    {
-      "name": "dfuentes",
-      "email": "daniel.richard.fuentes@gmail.com"
-    },
-    {
-      "name": "anoonan",
-      "email": "amnoonann@gmail.com"
-    },
-    {
-      "name": "nielst",
-      "email": "NTerwiesch@gmail.com"
-    },
-    {
-      "name": "ladanazita",
-      "email": "ladanazita@gmail.com"
-    },
-    {
-      "name": "rbranson",
-      "email": "rick@diodeware.com"
-    },
-    {
-      "name": "jedwatson",
-      "email": "jed.watson@me.com"
-    },
-    {
-      "name": "srthurman",
-      "email": "srthurman@gmail.com"
-    },
-    {
-      "name": "jgershen",
-      "email": "joe@segment.com"
-    },
-    {
-      "name": "ivolo",
-      "email": "ilya@segment.io"
-    },
-    {
-      "name": "ccnixon",
-      "email": "chrisnxn@gmail.com"
-    },
-    {
-      "name": "tidothegreat",
-      "email": "tido@segment.com"
-    },
-    {
-      "name": "chrisbuttery",
-      "email": "info@chrisbuttery.com"
-    },
-    {
-      "name": "lambtron",
-      "email": "andyjiang@gmail.com"
-    },
-    {
-      "name": "thehydroimpulse",
-      "email": "dnfagnan@gmail.com"
-    },
-    {
-      "name": "yields",
-      "email": "yields@icloud.com"
-    },
-    {
-      "name": "reinpk",
-      "email": "reinpk@gmail.com"
-    },
-    {
-      "name": "dominicbarnes",
-      "email": "dominic@dbarnes.info"
-    },
-    {
-      "name": "stevenmiller888",
-      "email": "stevenmiller888@me.com"
-    },
-    {
-      "name": "hanothan",
-      "email": "hankim813@gmail.com"
-    },
-    {
-      "name": "tejasmanohar",
-      "email": "me@tejas.io"
-    },
-    {
-      "name": "rowno",
-      "email": "rowno@webspirited.com"
-    },
-    {
-      "name": "stephenmathieson",
-      "email": "me@stephenmathieson.com"
-    },
-    {
-      "name": "segmentio",
-      "email": "tools@segment.com"
-    },
-    {
-      "name": "segment-admin",
-      "email": "tools+npm@segment.com"
-    }
-  ],
   "name": "@segment/analytics.js-core",
-  "optionalDependencies": {},
-  "readme": "ERROR: No README data found!",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/segmentio/analytics.js-core.git"
@@ -3349,6 +3079,107 @@ module.exports={
 }
 
 },{}],29:[function(require,module,exports){
+'use strict';
+
+/**
+ * Module dependencies.
+ */
+
+var integration = require('@segment/analytics.js-integration');
+var push = require('global-queue')('dataLayer', { wrap: false });
+
+/**
+ * Expose `GTM`.
+ */
+
+var GTM = module.exports = integration('Google Tag Manager')
+  .global('dataLayer')
+  .global('google_tag_manager')
+  .option('containerId', '')
+  .option('environment', '')
+  .option('trackNamedPages', true)
+  .option('trackCategorizedPages', true)
+  .tag('no-env', '<script src="//www.googletagmanager.com/gtm.js?id={{ containerId }}&l=dataLayer">')
+  .tag('with-env', '<script src="//www.googletagmanager.com/gtm.js?id={{ containerId }}&l=dataLayer&gtm_preview={{ environment }}">');
+
+/**
+ * Initialize.
+ *
+ * https://developers.google.com/tag-manager
+ *
+ * @api public
+ */
+
+GTM.prototype.initialize = function() {
+  push({ 'gtm.start': Number(new Date()), event: 'gtm.js' });
+
+  if (this.options.environment.length) {
+    this.load('with-env', this.options, this.ready);
+  } else {
+    this.load('no-env', this.options, this.ready);
+  }
+};
+
+/**
+ * Loaded?
+ *
+ * @api private
+ * @return {boolean}
+ */
+
+GTM.prototype.loaded = function() {
+  return !!(window.dataLayer && Array.prototype.push !== window.dataLayer.push);
+};
+
+/**
+ * Page.
+ *
+ * @api public
+ * @param {Page} page
+ */
+
+GTM.prototype.page = function(page) {
+  var category = page.category();
+  var name = page.fullName();
+  var opts = this.options;
+
+  // all
+  if (opts.trackAllPages) {
+    this.track(page.track());
+  }
+
+  // categorized
+  if (category && opts.trackCategorizedPages) {
+    this.track(page.track(category));
+  }
+
+  // named
+  if (name && opts.trackNamedPages) {
+    this.track(page.track(name));
+  }
+};
+
+/**
+ * Track.
+ *
+ * https://developers.google.com/tag-manager/devguide#events
+ *
+ * @api public
+ * @param {Track} track
+ */
+
+GTM.prototype.track = function(track) {
+  var props = track.properties();
+  var userId = this.analytics.user().id();
+  var anonymousId = this.analytics.user().anonymousId();
+  if (userId) props.userId = userId;
+  if (anonymousId) props.segmentAnonymousId = anonymousId;
+  props.event = track.event();
+
+  push(props);
+};
+
+},{"@segment/analytics.js-integration":37,"global-queue":80}],30:[function(require,module,exports){
 'use strict';
 
 /**
@@ -3863,7 +3694,7 @@ function getTld(domain) {
  */
 function noop() {}
 
-},{"@ndhoule/extend":10,"@ndhoule/keys":13,"@segment/ad-params":17,"@segment/analytics.js-integration":30,"@segment/localstorage-retry":43,"@segment/protocol":53,"@segment/send-json":54,"@segment/top-domain":56,"@segment/utm-params":57,"component-clone":60,"component-cookie":61,"json3":77,"spark-md5":103,"uuid":110,"yields-store":111}],30:[function(require,module,exports){
+},{"@ndhoule/extend":10,"@ndhoule/keys":13,"@segment/ad-params":17,"@segment/analytics.js-integration":31,"@segment/localstorage-retry":49,"@segment/protocol":59,"@segment/send-json":60,"@segment/top-domain":62,"@segment/utm-params":63,"component-clone":67,"component-cookie":68,"json3":87,"spark-md5":113,"uuid":120,"yields-store":121}],31:[function(require,module,exports){
 'use strict';
 
 /**
@@ -3928,7 +3759,7 @@ function createIntegration(name) {
 
 module.exports = createIntegration;
 
-},{"./protos":31,"./statics":32,"@ndhoule/clone":5,"@ndhoule/defaults":6,"@ndhoule/extend":10,"component-bind":59,"debug":34,"slug-component":102}],31:[function(require,module,exports){
+},{"./protos":32,"./statics":33,"@ndhoule/clone":5,"@ndhoule/defaults":6,"@ndhoule/extend":10,"component-bind":66,"debug":35,"slug-component":112}],32:[function(require,module,exports){
 'use strict';
 
 /**
@@ -4105,16 +3936,9 @@ exports.invoke = function(method) {
   if (!this[method]) return;
   var args = Array.prototype.slice.call(arguments, 1);
   if (!this._ready) return this.queue(method, args);
-  var ret;
 
-  try {
-    this.debug('%s with %o', method, args);
-    ret = this[method].apply(this, args);
-  } catch (e) {
-    this.debug('error %o calling %s with %o', e, method, args);
-  }
-
-  return ret;
+  this.debug('%s with %o', method, args);
+  return this[method].apply(this, args);
 };
 
 /**
@@ -4411,7 +4235,7 @@ function render(template, locals) {
   }, {}, template.attrs);
 }
 
-},{"@ndhoule/after":3,"@ndhoule/each":8,"@ndhoule/every":9,"@ndhoule/foldl":11,"@segment/fmt":38,"@segment/load-script":42,"analytics-events":33,"component-emitter":64,"is":76,"load-iframe":81,"next-tick":87,"to-no-case":105}],32:[function(require,module,exports){
+},{"@ndhoule/after":3,"@ndhoule/each":8,"@ndhoule/every":9,"@ndhoule/foldl":11,"@segment/fmt":44,"@segment/load-script":48,"analytics-events":34,"component-emitter":71,"is":86,"load-iframe":91,"next-tick":97,"to-no-case":115}],33:[function(require,module,exports){
 'use strict';
 
 /**
@@ -4576,7 +4400,7 @@ function objectify(str) {
   };
 }
 
-},{"@ndhoule/each":8,"@ndhoule/includes":12,"component-emitter":64,"domify":72}],33:[function(require,module,exports){
+},{"@ndhoule/each":8,"@ndhoule/includes":12,"component-emitter":71,"domify":79}],34:[function(require,module,exports){
 
 module.exports = {
   // Promotions
@@ -4643,7 +4467,7 @@ module.exports = {
   pushNotificationBounced: /^[ _]?push[ _]?notification[ _]?bounced[ _]?$/i
 };
 
-},{}],34:[function(require,module,exports){
+},{}],35:[function(require,module,exports){
 (function (process){
 /**
  * This is the web browser implementation of `debug()`.
@@ -4832,7 +4656,7 @@ function localstorage() {
 }
 
 }).call(this,require('_process'))
-},{"./debug":35,"_process":89}],35:[function(require,module,exports){
+},{"./debug":36,"_process":99}],36:[function(require,module,exports){
 
 /**
  * This is the common logic for both the Node.js and web browser
@@ -5036,7 +4860,648 @@ function coerce(val) {
   return val;
 }
 
-},{"ms":82}],36:[function(require,module,exports){
+},{"ms":92}],37:[function(require,module,exports){
+arguments[4][31][0].apply(exports,arguments)
+},{"./protos":38,"./statics":39,"@ndhoule/clone":5,"@ndhoule/defaults":6,"@ndhoule/extend":10,"component-bind":66,"debug":40,"dup":31,"slug-component":112}],38:[function(require,module,exports){
+'use strict';
+
+/**
+ * Module dependencies.
+ */
+
+var Emitter = require('component-emitter');
+var after = require('@ndhoule/after');
+var each = require('@ndhoule/each');
+var events = require('analytics-events');
+var every = require('@ndhoule/every');
+var fmt = require('@segment/fmt');
+var foldl = require('@ndhoule/foldl');
+var is = require('is');
+var loadIframe = require('load-iframe');
+var loadScript = require('@segment/load-script');
+var nextTick = require('next-tick');
+var normalize = require('to-no-case');
+
+/**
+ * hasOwnProperty reference.
+ */
+
+var has = Object.prototype.hasOwnProperty;
+
+/**
+ * No operation.
+ */
+
+var noop = function noop() {};
+
+/**
+ * Window defaults.
+ */
+
+var onerror = window.onerror;
+var onload = null;
+
+/**
+ * Mixin emitter.
+ */
+
+/* eslint-disable new-cap */
+Emitter(exports);
+/* eslint-enable new-cap */
+
+/**
+ * Initialize.
+ */
+
+exports.initialize = function() {
+  var ready = this.ready;
+  nextTick(ready);
+};
+
+/**
+ * Loaded?
+ *
+ * @api private
+ * @return {boolean}
+ */
+
+exports.loaded = function() {
+  return false;
+};
+
+/**
+ * Page.
+ *
+ * @api public
+ * @param {Page} page
+ */
+
+/* eslint-disable no-unused-vars */
+exports.page = function(page) {};
+/* eslint-enable no-unused-vars */
+
+/**
+ * Track.
+ *
+ * @api public
+ * @param {Track} track
+ */
+
+/* eslint-disable no-unused-vars */
+exports.track = function(track) {};
+/* eslint-enable no-unused-vars */
+
+/**
+ * Get values from items in `options` that are mapped to `key`.
+ * `options` is an integration setting which is a collection
+ * of type 'map', 'array', or 'mixed'
+ *
+ * Use cases include mapping events to pixelIds (map), sending generic
+ * conversion pixels only for specific events (array), or configuring dynamic
+ * mappings of event properties to query string parameters based on event (mixed)
+ *
+ * @api public
+ * @param {Object|Object[]|String[]} options An object, array of objects, or
+ * array of strings pulled from settings.mapping.
+ * @param {string} key The name of the item in options whose metadata
+ * we're looking for.
+ * @return {Array} An array of settings that match the input `key` name.
+ * @example
+ *
+ * // 'Map'
+ * var events = { my_event: 'a4991b88' };
+ * .map(events, 'My Event');
+ * // => ["a4991b88"]
+ * .map(events, 'whatever');
+ * // => []
+ *
+ * // 'Array'
+ * * var events = ['Completed Order', 'My Event'];
+ * .map(events, 'My Event');
+ * // => ["My Event"]
+ * .map(events, 'whatever');
+ * // => []
+ *
+ * // 'Mixed'
+ * var events = [{ key: 'my event', value: '9b5eb1fa' }];
+ * .map(events, 'my_event');
+ * // => ["9b5eb1fa"]
+ * .map(events, 'whatever');
+ * // => []
+ */
+
+exports.map = function(options, key) {
+  var normalizedComparator = normalize(key);
+  var mappingType = getMappingType(options);
+
+  if (mappingType === 'unknown') {
+    return [];
+  }
+
+  return foldl(function(matchingValues, val, key) {
+    var compare;
+    var result;
+
+    if (mappingType === 'map') {
+      compare = key;
+      result = val;
+    }
+
+    if (mappingType === 'array') {
+      compare = val;
+      result = val;
+    }
+
+    if (mappingType === 'mixed') {
+      compare = val.key;
+      result = val.value;
+    }
+
+    if (normalize(compare) === normalizedComparator) {
+      matchingValues.push(result);
+    }
+
+    return matchingValues;
+  }, [], options);
+};
+
+/**
+ * Invoke a `method` that may or may not exist on the prototype with `args`,
+ * queueing or not depending on whether the integration is "ready". Don't
+ * trust the method call, since it contains integration party code.
+ *
+ * @api private
+ * @param {string} method
+ * @param {...*} args
+ */
+
+exports.invoke = function(method) {
+  if (!this[method]) return;
+  var args = Array.prototype.slice.call(arguments, 1);
+  if (!this._ready) return this.queue(method, args);
+  var ret;
+
+  try {
+    this.debug('%s with %o', method, args);
+    ret = this[method].apply(this, args);
+  } catch (e) {
+    this.debug('error %o calling %s with %o', e, method, args);
+  }
+
+  return ret;
+};
+
+/**
+ * Queue a `method` with `args`.
+ *
+ * @api private
+ * @param {string} method
+ * @param {Array} args
+ */
+
+exports.queue = function(method, args) {
+  this._queue.push({ method: method, args: args });
+};
+
+/**
+ * Flush the internal queue.
+ *
+ * @api private
+ */
+
+exports.flush = function() {
+  this._ready = true;
+  var self = this;
+
+  each(function(call) {
+    self[call.method].apply(self, call.args);
+  }, this._queue);
+
+  // Empty the queue.
+  this._queue.length = 0;
+};
+
+/**
+ * Reset the integration, removing its global variables.
+ *
+ * @api private
+ */
+
+exports.reset = function() {
+  for (var i = 0; i < this.globals.length; i++) {
+    window[this.globals[i]] = undefined;
+  }
+
+  window.onerror = onerror;
+  window.onload = onload;
+};
+
+/**
+ * Load a tag by `name`.
+ *
+ * @param {string} name The name of the tag.
+ * @param {Object} locals Locals used to populate the tag's template variables
+ * (e.g. `userId` in '<img src="https://whatever.com/{{ userId }}">').
+ * @param {Function} [callback=noop] A callback, invoked when the tag finishes
+ * loading.
+ */
+
+exports.load = function(name, locals, callback) {
+  // Argument shuffling
+  if (typeof name === 'function') { callback = name; locals = null; name = null; }
+  if (name && typeof name === 'object') { callback = locals; locals = name; name = null; }
+  if (typeof locals === 'function') { callback = locals; locals = null; }
+
+  // Default arguments
+  name = name || 'library';
+  locals = locals || {};
+
+  locals = this.locals(locals);
+  var template = this.templates[name];
+  if (!template) throw new Error(fmt('template "%s" not defined.', name));
+  var attrs = render(template, locals);
+  callback = callback || noop;
+  var self = this;
+  var el;
+
+  switch (template.type) {
+  case 'img':
+    attrs.width = 1;
+    attrs.height = 1;
+    el = loadImage(attrs, callback);
+    break;
+  case 'script':
+    el = loadScript(attrs, function(err) {
+      if (!err) return callback();
+      self.debug('error loading "%s" error="%s"', self.name, err);
+    });
+      // TODO: hack until refactoring load-script
+    delete attrs.src;
+    each(function(val, key) {
+      el.setAttribute(key, val);
+    }, attrs);
+    break;
+  case 'iframe':
+    el = loadIframe(attrs, callback);
+    break;
+  default:
+      // No default case
+  }
+
+  return el;
+};
+
+/**
+ * Locals for tag templates.
+ *
+ * By default it includes a cache buster and all of the options.
+ *
+ * @param {Object} [locals]
+ * @return {Object}
+ */
+
+exports.locals = function(locals) {
+  locals = locals || {};
+  var cache = Math.floor(new Date().getTime() / 3600000);
+  if (!locals.hasOwnProperty('cache')) locals.cache = cache;
+  each(function(val, key) {
+    if (!locals.hasOwnProperty(key)) locals[key] = val;
+  }, this.options);
+  return locals;
+};
+
+/**
+ * Simple way to emit ready.
+ *
+ * @api public
+ */
+
+exports.ready = function() {
+  this.emit('ready');
+};
+
+/**
+ * Wrap the initialize method in an exists check, so we don't have to do it for
+ * every single integration.
+ *
+ * @api private
+ */
+
+exports._wrapInitialize = function() {
+  var initialize = this.initialize;
+  this.initialize = function() {
+    this.debug('initialize');
+    this._initialized = true;
+    var ret = initialize.apply(this, arguments);
+    this.emit('initialize');
+    return ret;
+  };
+};
+
+/**
+ * Wrap the page method to call to noop the first page call if the integration assumes
+ * a pageview.
+ *
+ * @api private
+ */
+
+exports._wrapPage = function() {
+  // Noop the first page call if integration assumes pageview
+  if (this._assumesPageview) return this.page = after(2, this.page);
+};
+
+/**
+ * Wrap the track method to call other ecommerce methods if available depending
+ * on the `track.event()`.
+ *
+ * @api private
+ */
+
+exports._wrapTrack = function() {
+  var t = this.track;
+  this.track = function(track) {
+    var event = track.event();
+    var called;
+    var ret;
+
+    for (var method in events) {
+      if (has.call(events, method)) {
+        var regexp = events[method];
+        if (!this[method]) continue;
+        if (!regexp.test(event)) continue;
+        ret = this[method].apply(this, arguments);
+        called = true;
+        break;
+      }
+    }
+
+    if (!called) ret = t.apply(this, arguments);
+    return ret;
+  };
+};
+
+/**
+ * Determine the type of the option passed to `#map`
+ *
+ * @api private
+ * @param {Object|Object[]} mapping
+ * @return {String} mappingType
+ */
+
+function getMappingType(mapping) {
+  if (is.array(mapping)) {
+    return every(isMixed, mapping) ? 'mixed' : 'array';
+  }
+  if (is.object(mapping)) return 'map';
+  return 'unknown';
+}
+
+/**
+ * Determine if item in mapping array is a valid "mixed" type value
+ *
+ * Must be an object with properties "key" (of type string)
+ * and "value" (of any type)
+ *
+ * @api private
+ * @param {*} item
+ * @return {Boolean}
+ */
+
+function isMixed(item) {
+  if (!is.object(item)) return false;
+  if (!is.string(item.key)) return false;
+  if (!has.call(item, 'value')) return false;
+  return true;
+}
+
+/**
+ * TODO: Document me
+ *
+ * @api private
+ * @param {Object} attrs
+ * @param {Function} fn
+ * @return {Image}
+ */
+
+function loadImage(attrs, fn) {
+  fn = fn || function() {};
+  var img = new Image();
+  img.onerror = error(fn, 'failed to load pixel', img);
+  img.onload = function() { fn(); };
+  img.src = attrs.src;
+  img.width = 1;
+  img.height = 1;
+  return img;
+}
+
+/**
+ * TODO: Document me
+ *
+ * @api private
+ * @param {Function} fn
+ * @param {string} message
+ * @param {Element} img
+ * @return {Function}
+ */
+
+function error(fn, message, img) {
+  return function(e) {
+    e = e || window.event;
+    var err = new Error(message);
+    err.event = e;
+    err.source = img;
+    fn(err);
+  };
+}
+
+/**
+ * Render template + locals into an `attrs` object.
+ *
+ * @api private
+ * @param {Object} template
+ * @param {Object} locals
+ * @return {Object}
+ */
+
+function render(template, locals) {
+  return foldl(function(attrs, val, key) {
+    attrs[key] = val.replace(/\{\{\ *(\w+)\ *\}\}/g, function(_, $1) {
+      return locals[$1];
+    });
+    return attrs;
+  }, {}, template.attrs);
+}
+
+},{"@ndhoule/after":3,"@ndhoule/each":8,"@ndhoule/every":9,"@ndhoule/foldl":11,"@segment/fmt":44,"@segment/load-script":48,"analytics-events":64,"component-emitter":71,"is":86,"load-iframe":91,"next-tick":97,"to-no-case":115}],39:[function(require,module,exports){
+'use strict';
+
+/**
+ * Module dependencies.
+ */
+
+var Emitter = require('component-emitter');
+var domify = require('domify');
+var each = require('@ndhoule/each');
+var includes = require('@ndhoule/includes');
+
+/**
+ * Mix in emitter.
+ */
+
+/* eslint-disable new-cap */
+Emitter(exports);
+/* eslint-enable new-cap */
+
+/**
+ * Add a new option to the integration by `key` with default `value`.
+ *
+ * @api public
+ * @param {string} key
+ * @param {*} value
+ * @return {Integration}
+ */
+
+exports.option = function(key, value) {
+  this.prototype.defaults[key] = value;
+  return this;
+};
+
+/**
+ * Add a new mapping option.
+ *
+ * This will create a method `name` that will return a mapping for you to use.
+ *
+ * @api public
+ * @param {string} name
+ * @return {Integration}
+ * @example
+ * Integration('My Integration')
+ *   .mapping('events');
+ *
+ * new MyIntegration().track('My Event');
+ *
+ * .track = function(track){
+ *   var events = this.events(track.event());
+ *   each(send, events);
+ *  };
+ */
+
+exports.mapping = function(name) {
+  this.option(name, []);
+  this.prototype[name] = function(key) {
+    return this.map(this.options[name], key);
+  };
+  return this;
+};
+
+/**
+ * Register a new global variable `key` owned by the integration, which will be
+ * used to test whether the integration is already on the page.
+ *
+ * @api public
+ * @param {string} key
+ * @return {Integration}
+ */
+
+exports.global = function(key) {
+  this.prototype.globals.push(key);
+  return this;
+};
+
+/**
+ * Mark the integration as assuming an initial pageview, so to defer the first page call, keep track of
+ * whether we already nooped the first page call.
+ *
+ * @api public
+ * @return {Integration}
+ */
+
+exports.assumesPageview = function() {
+  this.prototype._assumesPageview = true;
+  return this;
+};
+
+/**
+ * Mark the integration as being "ready" once `load` is called.
+ *
+ * @api public
+ * @return {Integration}
+ */
+
+exports.readyOnLoad = function() {
+  this.prototype._readyOnLoad = true;
+  return this;
+};
+
+/**
+ * Mark the integration as being "ready" once `initialize` is called.
+ *
+ * @api public
+ * @return {Integration}
+ */
+
+exports.readyOnInitialize = function() {
+  this.prototype._readyOnInitialize = true;
+  return this;
+};
+
+/**
+ * Define a tag to be loaded.
+ *
+ * @api public
+ * @param {string} [name='library'] A nicename for the tag, commonly used in
+ * #load. Helpful when the integration has multiple tags and you need a way to
+ * specify which of the tags you want to load at a given time.
+ * @param {String} str DOM tag as string or URL.
+ * @return {Integration}
+ */
+
+exports.tag = function(name, tag) {
+  if (tag == null) {
+    tag = name;
+    name = 'library';
+  }
+  this.prototype.templates[name] = objectify(tag);
+  return this;
+};
+
+/**
+ * Given a string, give back DOM attributes.
+ *
+ * Do it in a way where the browser doesn't load images or iframes. It turns
+ * out domify will load images/iframes because whenever you construct those
+ * DOM elements, the browser immediately loads them.
+ *
+ * @api private
+ * @param {string} str
+ * @return {Object}
+ */
+
+function objectify(str) {
+  // replace `src` with `data-src` to prevent image loading
+  str = str.replace(' src="', ' data-src="');
+
+  var el = domify(str);
+  var attrs = {};
+
+  each(function(attr) {
+    // then replace it back
+    var name = attr.name === 'data-src' ? 'src' : attr.name;
+    if (!includes(attr.name + '=', str)) return;
+    attrs[name] = attr.value;
+  }, el.attributes);
+
+  return {
+    type: el.tagName.toLowerCase(),
+    attrs: attrs
+  };
+}
+
+},{"@ndhoule/each":8,"@ndhoule/includes":12,"component-emitter":71,"domify":79}],40:[function(require,module,exports){
+arguments[4][35][0].apply(exports,arguments)
+},{"./debug":41,"_process":99,"dup":35}],41:[function(require,module,exports){
+arguments[4][36][0].apply(exports,arguments)
+},{"dup":36,"ms":92}],42:[function(require,module,exports){
 var utf8Encode = require('utf8-encode');
 var keyStr = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
 
@@ -5073,7 +5538,7 @@ function encode(input) {
 
     return output;
 }
-},{"utf8-encode":108}],37:[function(require,module,exports){
+},{"utf8-encode":118}],43:[function(require,module,exports){
 'use strict';
 
 /**
@@ -5097,7 +5562,7 @@ function canonical() {
 
 module.exports = canonical;
 
-},{}],38:[function(require,module,exports){
+},{}],44:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -5132,7 +5597,7 @@ fmt.d = parseInt;
 module.exports = fmt;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],39:[function(require,module,exports){
+},{}],45:[function(require,module,exports){
 'use strict';
 
 function isMeta(e) {
@@ -5160,7 +5625,7 @@ function isMeta(e) {
 
 module.exports = isMeta;
 
-},{}],40:[function(require,module,exports){
+},{}],46:[function(require,module,exports){
 'use strict';
 
 var type = require('component-type');
@@ -5237,7 +5702,7 @@ function array(arr, strict) {
   return arr;
 }
 
-},{"@segment/isodate":41,"component-each":62,"component-type":69}],41:[function(require,module,exports){
+},{"@segment/isodate":47,"component-each":69,"component-type":76}],47:[function(require,module,exports){
 'use strict';
 
 /**
@@ -5318,7 +5783,7 @@ exports.is = function(string, strict) {
   return matcher.test(string);
 };
 
-},{}],42:[function(require,module,exports){
+},{}],48:[function(require,module,exports){
 'use strict';
 
 /*
@@ -5390,7 +5855,7 @@ function loadScript(options, cb) {
 
 module.exports = loadScript;
 
-},{"component-type":69,"next-tick":87,"script-onload":90}],43:[function(require,module,exports){
+},{"component-type":76,"next-tick":97,"script-onload":100}],49:[function(require,module,exports){
 'use strict';
 
 var uuid = require('uuid').v4;
@@ -5663,7 +6128,7 @@ Queue.prototype._reclaim = function(id) {
 
 module.exports = Queue;
 
-},{"./schedule":45,"./store":46,"@ndhoule/each":8,"debug":71,"uuid":47}],44:[function(require,module,exports){
+},{"./schedule":51,"./store":52,"@ndhoule/each":8,"debug":78,"uuid":53}],50:[function(require,module,exports){
 'use strict';
 
 var keys = require('@ndhoule/keys');
@@ -5728,7 +6193,7 @@ module.exports.localStorage = pickStorage();
 // Expose the in-memory store explicitly for testing
 module.exports.inMemoryStore = inMemoryStore;
 
-},{"@ndhoule/keys":13,"uuid":47}],45:[function(require,module,exports){
+},{"@ndhoule/keys":13,"uuid":53}],51:[function(require,module,exports){
 'use strict';
 
 var each = require('@ndhoule/each');
@@ -5790,7 +6255,7 @@ Schedule.resetClock = function() {
 
 module.exports = Schedule;
 
-},{"@ndhoule/each":8}],46:[function(require,module,exports){
+},{"@ndhoule/each":8}],52:[function(require,module,exports){
 'use strict';
 
 var localStorage = require('./localStorage').localStorage;
@@ -5848,7 +6313,7 @@ module.exports.getAll = function(name) {
   return res;
 };
 
-},{"./localStorage":44,"json3":77}],47:[function(require,module,exports){
+},{"./localStorage":50,"json3":87}],53:[function(require,module,exports){
 var v1 = require('./v1');
 var v4 = require('./v4');
 
@@ -5858,7 +6323,7 @@ uuid.v4 = v4;
 
 module.exports = uuid;
 
-},{"./v1":50,"./v4":51}],48:[function(require,module,exports){
+},{"./v1":56,"./v4":57}],54:[function(require,module,exports){
 /**
  * Convert array of 16 byte values to UUID string format of the form:
  * XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX
@@ -5871,43 +6336,46 @@ for (var i = 0; i < 256; ++i) {
 function bytesToUuid(buf, offset) {
   var i = offset || 0;
   var bth = byteToHex;
-  return bth[buf[i++]] + bth[buf[i++]] +
-          bth[buf[i++]] + bth[buf[i++]] + '-' +
-          bth[buf[i++]] + bth[buf[i++]] + '-' +
-          bth[buf[i++]] + bth[buf[i++]] + '-' +
-          bth[buf[i++]] + bth[buf[i++]] + '-' +
-          bth[buf[i++]] + bth[buf[i++]] +
-          bth[buf[i++]] + bth[buf[i++]] +
-          bth[buf[i++]] + bth[buf[i++]];
+  // join used to fix memory issue caused by concatenation: https://bugs.chromium.org/p/v8/issues/detail?id=3175#c4
+  return ([bth[buf[i++]], bth[buf[i++]], 
+	bth[buf[i++]], bth[buf[i++]], '-',
+	bth[buf[i++]], bth[buf[i++]], '-',
+	bth[buf[i++]], bth[buf[i++]], '-',
+	bth[buf[i++]], bth[buf[i++]], '-',
+	bth[buf[i++]], bth[buf[i++]],
+	bth[buf[i++]], bth[buf[i++]],
+	bth[buf[i++]], bth[buf[i++]]]).join('');
 }
 
 module.exports = bytesToUuid;
 
-},{}],49:[function(require,module,exports){
-(function (global){
+},{}],55:[function(require,module,exports){
 // Unique ID creation requires a high quality random # generator.  In the
 // browser this is a little complicated due to unknown quality of Math.random()
 // and inconsistent support for the `crypto` API.  We do the best we can via
 // feature-detection
-var rng;
 
-var crypto = global.crypto || global.msCrypto; // for IE 11
-if (crypto && crypto.getRandomValues) {
+// getRandomValues needs to be invoked in a context where "this" is a Crypto
+// implementation. Also, find the complete implementation of crypto on IE11.
+var getRandomValues = (typeof(crypto) != 'undefined' && crypto.getRandomValues && crypto.getRandomValues.bind(crypto)) ||
+                      (typeof(msCrypto) != 'undefined' && typeof window.msCrypto.getRandomValues == 'function' && msCrypto.getRandomValues.bind(msCrypto));
+
+if (getRandomValues) {
   // WHATWG crypto RNG - http://wiki.whatwg.org/wiki/Crypto
   var rnds8 = new Uint8Array(16); // eslint-disable-line no-undef
-  rng = function whatwgRNG() {
-    crypto.getRandomValues(rnds8);
+
+  module.exports = function whatwgRNG() {
+    getRandomValues(rnds8);
     return rnds8;
   };
-}
-
-if (!rng) {
+} else {
   // Math.random()-based (RNG)
   //
   // If all else fails, use Math.random().  It's fast, but is of unspecified
   // quality.
   var rnds = new Array(16);
-  rng = function() {
+
+  module.exports = function mathRNG() {
     for (var i = 0, r; i < 16; i++) {
       if ((i & 0x03) === 0) r = Math.random() * 0x100000000;
       rnds[i] = r >>> ((i & 0x03) << 3) & 0xff;
@@ -5917,10 +6385,7 @@ if (!rng) {
   };
 }
 
-module.exports = rng;
-
-}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],50:[function(require,module,exports){
+},{}],56:[function(require,module,exports){
 var rng = require('./lib/rng');
 var bytesToUuid = require('./lib/bytesToUuid');
 
@@ -5929,20 +6394,12 @@ var bytesToUuid = require('./lib/bytesToUuid');
 // Inspired by https://github.com/LiosK/UUID.js
 // and http://docs.python.org/library/uuid.html
 
-// random #'s we need to init node and clockseq
-var _seedBytes = rng();
-
-// Per 4.5, create and 48-bit node id, (47 random bits + multicast bit = 1)
-var _nodeId = [
-  _seedBytes[0] | 0x01,
-  _seedBytes[1], _seedBytes[2], _seedBytes[3], _seedBytes[4], _seedBytes[5]
-];
-
-// Per 4.2.2, randomize (14 bit) clockseq
-var _clockseq = (_seedBytes[6] << 8 | _seedBytes[7]) & 0x3fff;
+var _nodeId;
+var _clockseq;
 
 // Previous uuid creation time
-var _lastMSecs = 0, _lastNSecs = 0;
+var _lastMSecs = 0;
+var _lastNSecs = 0;
 
 // See https://github.com/broofa/node-uuid for API details
 function v1(options, buf, offset) {
@@ -5950,8 +6407,26 @@ function v1(options, buf, offset) {
   var b = buf || [];
 
   options = options || {};
-
+  var node = options.node || _nodeId;
   var clockseq = options.clockseq !== undefined ? options.clockseq : _clockseq;
+
+  // node and clockseq need to be initialized to random values if they're not
+  // specified.  We do this lazily to minimize issues related to insufficient
+  // system entropy.  See #189
+  if (node == null || clockseq == null) {
+    var seedBytes = rng();
+    if (node == null) {
+      // Per 4.5, create and 48-bit node id, (47 random bits + multicast bit = 1)
+      node = _nodeId = [
+        seedBytes[0] | 0x01,
+        seedBytes[1], seedBytes[2], seedBytes[3], seedBytes[4], seedBytes[5]
+      ];
+    }
+    if (clockseq == null) {
+      // Per 4.2.2, randomize (14 bit) clockseq
+      clockseq = _clockseq = (seedBytes[6] << 8 | seedBytes[7]) & 0x3fff;
+    }
+  }
 
   // UUID timestamps are 100 nano-second units since the Gregorian epoch,
   // (1582-10-15 00:00).  JSNumbers aren't precise enough for this, so
@@ -6012,7 +6487,6 @@ function v1(options, buf, offset) {
   b[i++] = clockseq & 0xff;
 
   // `node`
-  var node = options.node || _nodeId;
   for (var n = 0; n < 6; ++n) {
     b[i + n] = node[n];
   }
@@ -6022,7 +6496,7 @@ function v1(options, buf, offset) {
 
 module.exports = v1;
 
-},{"./lib/bytesToUuid":48,"./lib/rng":49}],51:[function(require,module,exports){
+},{"./lib/bytesToUuid":54,"./lib/rng":55}],57:[function(require,module,exports){
 var rng = require('./lib/rng');
 var bytesToUuid = require('./lib/bytesToUuid');
 
@@ -6030,7 +6504,7 @@ function v4(options, buf, offset) {
   var i = buf && offset || 0;
 
   if (typeof(options) == 'string') {
-    buf = options == 'binary' ? new Array(16) : null;
+    buf = options === 'binary' ? new Array(16) : null;
     options = null;
   }
   options = options || {};
@@ -6053,7 +6527,7 @@ function v4(options, buf, offset) {
 
 module.exports = v4;
 
-},{"./lib/bytesToUuid":48,"./lib/rng":49}],52:[function(require,module,exports){
+},{"./lib/bytesToUuid":54,"./lib/rng":55}],58:[function(require,module,exports){
 'use strict';
 
 /**
@@ -6078,7 +6552,7 @@ function preventDefault(e) {
 
 module.exports = preventDefault;
 
-},{}],53:[function(require,module,exports){
+},{}],59:[function(require,module,exports){
 'use strict';
 
 /**
@@ -6163,7 +6637,7 @@ function set(protocol) {
   }
 }
 
-},{}],54:[function(require,module,exports){
+},{}],60:[function(require,module,exports){
 'use strict';
 
 /*
@@ -6281,7 +6755,7 @@ function encode(obj) {
   return encodeURIComponent(str);
 }
 
-},{"@segment/base64-encode":36,"has-cors":73,"json3":77,"jsonp":78}],55:[function(require,module,exports){
+},{"@segment/base64-encode":42,"has-cors":83,"json3":87,"jsonp":88}],61:[function(require,module,exports){
 (function (global){
 "use strict"
 
@@ -6454,7 +6928,7 @@ module.exports = (function() {
 }())
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"json3":77}],56:[function(require,module,exports){
+},{"json3":87}],62:[function(require,module,exports){
 'use strict';
 
 /**
@@ -6554,7 +7028,7 @@ domain.cookie = cookie;
 
 exports = module.exports = domain;
 
-},{"component-cookie":61,"component-url":70}],57:[function(require,module,exports){
+},{"component-cookie":68,"component-url":77}],63:[function(require,module,exports){
 'use strict';
 
 /**
@@ -6633,7 +7107,299 @@ function strict(query) {
 module.exports = utm;
 module.exports.strict = strict;
 
-},{"@ndhoule/foldl":11,"component-querystring":67}],58:[function(require,module,exports){
+},{"@ndhoule/foldl":11,"component-querystring":74}],64:[function(require,module,exports){
+'use strict';
+
+/**
+ * Module Dependencies
+ */
+
+var map = require('@ndhoule/map');
+var foldl = require('@ndhoule/foldl');
+
+var eventMap = {
+  // Videos
+  videoPlaybackStarted: [{
+    object: 'video playback',
+    action: 'started'
+  }],
+  videoPlaybackPaused: [{
+    object: 'video playback',
+    action: 'paused'
+  }],
+  videoPlaybackInterrupted: [{
+    object: 'video playback',
+    action: 'interrupted'
+  }],
+  videoPlaybackResumed: [{
+    object: 'video playback',
+    action: 'resumed'
+  }],
+  videoPlaybackCompleted: [{
+    object: 'video playback',
+    action: 'completed'
+  }],
+  videoPlaybackBufferStarted: [{
+    object: 'video playback buffer',
+    action: 'started'
+  }],
+  videoPlaybackBufferCompleted: [{
+    object: 'video playback buffer',
+    action: 'completed'
+  }],
+  videoPlaybackSeekStarted: [{
+    object: 'video playback seek',
+    action: 'started'
+  }],
+  videoPlaybackSeekCompleted: [{
+    object: 'video playback seek',
+    action: 'completed'
+  }],
+  videoContentStarted: [{
+    object: 'video content',
+    action: 'started'
+  }],
+  videoContentPlaying: [{
+    object: 'video content',
+    action: 'playing'
+  }],
+  videoContentCompleted: [{
+    object: 'video content',
+    action: 'completed'
+  }],
+  videoAdStarted: [{
+    object: 'video ad',
+    action: 'started'
+  }],
+  videoAdPlaying: [{
+    object: 'video ad',
+    action: 'playing'
+  }],
+  videoAdCompleted: [{
+    object: 'video ad',
+    action: 'completed'
+  }],
+
+  // Promotions
+  promotionViewed: [{
+    object: 'promotion',
+    action: 'viewed'
+  }],
+  promotionClicked: [{
+    object: 'promotion',
+    action: 'clicked'
+  }],
+
+  // Browsing
+  productsSearched: [{
+    object: 'products',
+    action: 'searched'
+  }],
+  productListViewed: [{
+    object: 'product list',
+    action: 'viewed'
+  }, {
+    object: 'product category',
+    action: 'viewed'
+  }],
+  productListFiltered: [{
+    object: 'product list',
+    action: 'filtered'
+  }],
+
+  // Core Ordering
+  productClicked: [{
+    object: 'product',
+    action: 'clicked'
+  }],
+  productViewed: [{
+    object: 'product',
+    action: 'viewed'
+  }],
+  productAdded: [{
+    object: 'product',
+    action: 'added'
+  }],
+  productRemoved: [{
+    object: 'product',
+    action: 'removed'
+  }],
+  cartViewed: [{
+    object: 'cart',
+    action: 'viewed'
+  }],
+  orderUpdated: [{
+    object: 'order',
+    action: 'updated'
+  }],
+  orderCompleted: [{
+    object: 'order',
+    action: 'completed'
+  }],
+  orderRefunded: [{
+    object: 'order',
+    action: 'refunded'
+  }],
+  orderCancelled: [{
+    object: 'order',
+    action: 'cancelled'
+  }],
+  paymentInfoEntered: [{
+    object: 'payment info',
+    action: 'entered'
+  }],
+  checkoutStarted: [{
+    object: 'checkout',
+    action: 'started'
+  }],
+  checkoutStepViewed: [{
+    object: 'checkout step',
+    action: 'viewed'
+  }],
+  checkoutStepCompleted: [{
+    object: 'checkout step',
+    action: 'completed'
+  }],
+
+  // Coupons
+  couponEntered: [{
+    object: 'coupon',
+    action: 'entered'
+  }],
+  couponApplied: [{
+    object: 'coupon',
+    action: 'applied'
+  }],
+  couponDenied: [{
+    object: 'coupon',
+    action: 'denied'
+  }],
+  couponRemoved: [{
+    object: 'coupon',
+    action: 'removed'
+  }],
+
+  // Wishlisting
+  productAddedToWishlist: [{
+    object: 'product',
+    action: 'added to wishlist'
+  }],
+  productRemovedFromWishlist: [{
+    object: 'product',
+    action: 'removed from wishlist'
+  }],
+  productAddedFromWishlistToCart: [{
+    object: 'product',
+    action: 'added to cart from wishlist'
+  }, {
+    object: 'product',
+    action: 'added from wishlist to cart'
+  }],
+
+  // Sharing
+  productShared: [{
+    object: 'product',
+    action: 'shared'
+  }],
+  cartShared: [{
+    object: 'cart',
+    action: 'shared'
+  }],
+
+  // Reviewing
+  productReviewed: [{
+    object: 'product',
+    action: 'reviewed'
+  }],
+
+  // App Lifecycle
+  applicationInstalled: [{
+    object: 'application',
+    action: 'installed'
+  }],
+  applicationUpdated: [{
+    object: 'application',
+    action: 'updated'
+  }],
+  applicationOpened: [{
+    object: 'application',
+    action: 'opened'
+  }],
+  applicationBackgrounded: [{
+    object: 'application',
+    action: 'backgrounded'
+  }],
+  applicationUninstalled: [{
+    object: 'application',
+    action: 'uninstalled'
+  }],
+
+  // App Campaign and Referral Events
+  installAttributed: [{
+    object: 'install',
+    action: 'attributed'
+  }],
+  deepLinkOpened: [{
+    object: 'deep link',
+    action: 'opened'
+  }],
+  pushNotificationReceived: [{
+    object: 'push notification',
+    action: 'received'
+  }],
+  pushNotificationTapped: [{
+    object: 'push notification',
+    action: 'tapped'
+  }],
+  pushNotificationBounced: [{
+    object: 'push notification',
+    action: 'bounced'
+  }]
+};
+
+/**
+ * Export the event map
+ *
+ * For each method
+ *   - For each of its object:action alias pairs
+ *     - For each permutation of that pair
+ *       - Create a regex string
+ *   - Join them and assign it to its respective method value
+ *
+ *  [{
+ *    object: 'product list',
+ *    action: 'viewed'
+ *  },{
+ *    object: 'product category',
+ *    action: 'viewed'
+ *  }] => /
+ *    ^[ _]?product[ _]?list[ _]?viewed[ _]?
+ *   |^[ _]?viewed[ _]?product[ _]?list[ _]?
+ *   |^[ _]?product[ _]?category[ _]?viewed[ _]?
+ *   |^[ _]?viewed[ _]?product[ _]?category[ _]?
+ *   $/i
+ *
+ *  todo(cs/wj/nh): memoization strategy / build step?
+ */
+
+module.exports = foldl(function transform(ret, pairs, method) {
+  var values = map(function(pair) {
+    return map(function(permutation) {
+      var flattened = [].concat.apply([], map(function(words) {
+        return words.split(' ');
+      }, permutation));
+      return '^[ _]?' + flattened.join('[ _]?') + '[ _]?';
+    }, [
+      [pair.action, pair.object],
+      [pair.object, pair.action]
+    ]).join('|');
+  }, pairs);
+  var conjoined = values.join('|') + '$';
+  ret[method] = new RegExp(conjoined, 'i');
+  return ret;
+}, {}, eventMap);
+
+},{"@ndhoule/foldl":11,"@ndhoule/map":14}],65:[function(require,module,exports){
 'use strict';
 
 var bind = require('component-bind');
@@ -6651,7 +7417,7 @@ function bindAll(obj) {
 
 module.exports = bindAll;
 
-},{"component-bind":59}],59:[function(require,module,exports){
+},{"component-bind":66}],66:[function(require,module,exports){
 /**
  * Slice reference.
  */
@@ -6676,7 +7442,7 @@ module.exports = function(obj, fn){
   }
 };
 
-},{}],60:[function(require,module,exports){
+},{}],67:[function(require,module,exports){
 /**
  * Module dependencies.
  */
@@ -6735,7 +7501,7 @@ function clone(obj){
   }
 }
 
-},{"component-type":69,"type":69}],61:[function(require,module,exports){
+},{"component-type":76,"type":76}],68:[function(require,module,exports){
 
 /**
  * Module dependencies.
@@ -6868,7 +7634,7 @@ function decode(value) {
   }
 }
 
-},{"debug":71}],62:[function(require,module,exports){
+},{"debug":78}],69:[function(require,module,exports){
 
 /**
  * Module dependencies.
@@ -6959,7 +7725,7 @@ function array(obj, fn, ctx) {
   }
 }
 
-},{"component-type":63,"to-function":104,"type":63}],63:[function(require,module,exports){
+},{"component-type":70,"to-function":114,"type":70}],70:[function(require,module,exports){
 
 /**
  * toString ref.
@@ -6993,7 +7759,7 @@ module.exports = function(val){
   return typeof val;
 };
 
-},{}],64:[function(require,module,exports){
+},{}],71:[function(require,module,exports){
 
 /**
  * Expose `Emitter`.
@@ -7158,7 +7924,7 @@ Emitter.prototype.hasListeners = function(event){
   return !! this.listeners(event).length;
 };
 
-},{}],65:[function(require,module,exports){
+},{}],72:[function(require,module,exports){
 var bind = window.addEventListener ? 'addEventListener' : 'attachEvent',
     unbind = window.removeEventListener ? 'removeEventListener' : 'detachEvent',
     prefix = bind !== 'addEventListener' ? 'on' : '';
@@ -7194,7 +7960,7 @@ exports.unbind = function(el, type, fn, capture){
   el[unbind](prefix + type, fn, capture || false);
   return fn;
 };
-},{}],66:[function(require,module,exports){
+},{}],73:[function(require,module,exports){
 /**
  * Global Names
  */
@@ -7281,7 +8047,7 @@ function prefixed(str) {
   };
 }
 
-},{}],67:[function(require,module,exports){
+},{}],74:[function(require,module,exports){
 
 /**
  * Module dependencies.
@@ -7388,7 +8154,7 @@ exports.stringify = function(obj){
   return pairs.join('&');
 };
 
-},{"trim":106,"type":68}],68:[function(require,module,exports){
+},{"trim":116,"type":75}],75:[function(require,module,exports){
 /**
  * toString ref.
  */
@@ -7424,7 +8190,7 @@ module.exports = function(val){
   return typeof val;
 };
 
-},{}],69:[function(require,module,exports){
+},{}],76:[function(require,module,exports){
 /**
  * toString ref.
  */
@@ -7472,7 +8238,7 @@ function isBuffer(obj) {
     ))
 }
 
-},{}],70:[function(require,module,exports){
+},{}],77:[function(require,module,exports){
 
 /**
  * Parse the given `url`.
@@ -7556,7 +8322,7 @@ function port (protocol){
   }
 }
 
-},{}],71:[function(require,module,exports){
+},{}],78:[function(require,module,exports){
 
 /**
  * Expose `debug()` as the module.
@@ -7695,7 +8461,7 @@ try {
   if (window.localStorage) debug.enable(localStorage.debug);
 } catch(e){}
 
-},{}],72:[function(require,module,exports){
+},{}],79:[function(require,module,exports){
 
 /**
  * Expose `parse`.
@@ -7809,7 +8575,48 @@ function parse(html, doc) {
   return fragment;
 }
 
-},{}],73:[function(require,module,exports){
+},{}],80:[function(require,module,exports){
+
+/**
+ * Module dependencies.
+ */
+
+var debug = require('debug');
+
+/**
+ * Expose `generate`.
+ */
+
+module.exports = generate;
+
+/**
+ * Generate a global queue pushing method with `name`.
+ *
+ * @param {String} name
+ * @param {Object} options
+ *   @property {Boolean} wrap
+ * @return {Function}
+ */
+
+function generate (name, options) {
+  var log = debug('global-queue:' + name);
+  options = options || {};
+
+  return function (args) {
+    args = [].slice.call(arguments);
+    window[name] || (window[name] = []);
+    log('%o', args);
+    options.wrap === false
+      ? window[name].push.apply(window[name], args)
+      : window[name].push(args);
+  };
+}
+
+},{"debug":81}],81:[function(require,module,exports){
+arguments[4][35][0].apply(exports,arguments)
+},{"./debug":82,"_process":99,"dup":35}],82:[function(require,module,exports){
+arguments[4][36][0].apply(exports,arguments)
+},{"dup":36,"ms":92}],83:[function(require,module,exports){
 
 /**
  * Module exports.
@@ -7828,7 +8635,7 @@ try {
   module.exports = false;
 }
 
-},{}],74:[function(require,module,exports){
+},{}],84:[function(require,module,exports){
 if (typeof Object.create === 'function') {
   // implementation from standard node.js 'util' module
   module.exports = function inherits(ctor, superCtor) {
@@ -7853,12 +8660,12 @@ if (typeof Object.create === 'function') {
   }
 }
 
-},{}],75:[function(require,module,exports){
+},{}],85:[function(require,module,exports){
 
 module.exports = function isEmail (string) {
     return (/.+\@.+\..+/).test(string);
 };
-},{}],76:[function(require,module,exports){
+},{}],86:[function(require,module,exports){
 /* globals window, HTMLElement */
 
 'use strict';
@@ -8660,7 +9467,7 @@ is.symbol = function (value) {
 
 module.exports = is;
 
-},{}],77:[function(require,module,exports){
+},{}],87:[function(require,module,exports){
 (function (global){
 /*! JSON v3.3.2 | http://bestiejs.github.io/json3 | Copyright 2012-2014, Kit Cambridge | http://kit.mit-license.org */
 ;(function () {
@@ -9566,7 +10373,7 @@ module.exports = is;
 }).call(this);
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],78:[function(require,module,exports){
+},{}],88:[function(require,module,exports){
 /**
  * Module dependencies
  */
@@ -9665,11 +10472,11 @@ function jsonp(url, opts, fn){
   return cancel;
 }
 
-},{"debug":79}],79:[function(require,module,exports){
-arguments[4][34][0].apply(exports,arguments)
-},{"./debug":80,"_process":89,"dup":34}],80:[function(require,module,exports){
+},{"debug":89}],89:[function(require,module,exports){
 arguments[4][35][0].apply(exports,arguments)
-},{"dup":35,"ms":82}],81:[function(require,module,exports){
+},{"./debug":90,"_process":99,"dup":35}],90:[function(require,module,exports){
+arguments[4][36][0].apply(exports,arguments)
+},{"dup":36,"ms":92}],91:[function(require,module,exports){
 /**
  * Module dependencies.
  */
@@ -9731,7 +10538,7 @@ module.exports = function loadIframe(options, fn){
   return iframe;
 };
 
-},{"is":76,"next-tick":87,"script-onload":90}],82:[function(require,module,exports){
+},{"is":86,"next-tick":97,"script-onload":100}],92:[function(require,module,exports){
 /**
  * Helpers.
  */
@@ -9885,7 +10692,7 @@ function plural(ms, n, name) {
   return Math.ceil(ms / n) + ' ' + name + 's';
 }
 
-},{}],83:[function(require,module,exports){
+},{}],93:[function(require,module,exports){
 'use strict';
 
 var is = require('is');
@@ -9930,7 +10737,7 @@ function toMs(num) {
   return num;
 }
 
-},{"./milliseconds":84,"./seconds":85,"@segment/isodate":86,"is":76}],84:[function(require,module,exports){
+},{"./milliseconds":94,"./seconds":95,"@segment/isodate":96,"is":86}],94:[function(require,module,exports){
 'use strict';
 
 /**
@@ -9962,7 +10769,7 @@ exports.parse = function(millis) {
   return new Date(millis);
 };
 
-},{}],85:[function(require,module,exports){
+},{}],95:[function(require,module,exports){
 'use strict';
 
 /**
@@ -9994,7 +10801,7 @@ exports.parse = function(seconds) {
   return new Date(millis);
 };
 
-},{}],86:[function(require,module,exports){
+},{}],96:[function(require,module,exports){
 'use strict';
 
 /**
@@ -10072,7 +10879,7 @@ exports.is = function(string, strict) {
   return matcher.test(string);
 };
 
-},{}],87:[function(require,module,exports){
+},{}],97:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -10140,7 +10947,7 @@ module.exports = (function () {
 }());
 
 }).call(this,require('_process'))
-},{"_process":89}],88:[function(require,module,exports){
+},{"_process":99}],98:[function(require,module,exports){
 
 var identity = function(_){ return _; };
 
@@ -10294,7 +11101,7 @@ function isFunction(val) {
   return typeof val === 'function';
 }
 
-},{}],89:[function(require,module,exports){
+},{}],99:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 
@@ -10480,7 +11287,7 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],90:[function(require,module,exports){
+},{}],100:[function(require,module,exports){
 
 // https://github.com/thirdpartyjs/thirdpartyjs-code/blob/master/examples/templates/02/loading-files/index.html
 
@@ -10535,7 +11342,7 @@ function attach(el, fn){
   });
 }
 
-},{}],91:[function(require,module,exports){
+},{}],101:[function(require,module,exports){
 'use strict';
 
 /**
@@ -10574,7 +11381,7 @@ module.exports = function(proto) {
   }
 };
 
-},{"obj-case":88}],92:[function(require,module,exports){
+},{"obj-case":98}],102:[function(require,module,exports){
 'use strict';
 
 /**
@@ -10645,7 +11452,7 @@ Alias.prototype.to = Alias.prototype.userId;
 
 module.exports = Alias;
 
-},{"./facade":93,"./utils":101}],93:[function(require,module,exports){
+},{"./facade":103,"./utils":111}],103:[function(require,module,exports){
 'use strict';
 
 var address = require('./address');
@@ -10959,7 +11766,7 @@ function transform(obj) {
 
 module.exports = Facade;
 
-},{"./address":91,"./is-enabled":97,"./utils":101,"@segment/isodate-traverse":40,"new-date":83,"obj-case":88}],94:[function(require,module,exports){
+},{"./address":101,"./is-enabled":107,"./utils":111,"@segment/isodate-traverse":46,"new-date":93,"obj-case":98}],104:[function(require,module,exports){
 'use strict';
 
 /**
@@ -11080,7 +11887,7 @@ Group.prototype.properties = function() {
 
 module.exports = Group;
 
-},{"./facade":93,"./utils":101,"is-email":75,"new-date":83}],95:[function(require,module,exports){
+},{"./facade":103,"./utils":111,"is-email":85,"new-date":93}],105:[function(require,module,exports){
 'use strict';
 
 var Facade = require('./facade');
@@ -11334,7 +12141,7 @@ Identify.prototype.birthday = Facade.proxy('traits.birthday');
 
 module.exports = Identify;
 
-},{"./facade":93,"./utils":101,"is-email":75,"new-date":83,"obj-case":88,"trim":106}],96:[function(require,module,exports){
+},{"./facade":103,"./utils":111,"is-email":85,"new-date":93,"obj-case":98,"trim":116}],106:[function(require,module,exports){
 'use strict';
 
 var Facade = require('./facade');
@@ -11356,7 +12163,7 @@ Facade.Screen = require('./screen');
 
 module.exports = Facade;
 
-},{"./alias":92,"./facade":93,"./group":94,"./identify":95,"./page":98,"./screen":99,"./track":100}],97:[function(require,module,exports){
+},{"./alias":102,"./facade":103,"./group":104,"./identify":105,"./page":108,"./screen":109,"./track":110}],107:[function(require,module,exports){
 'use strict';
 
 /**
@@ -11379,7 +12186,7 @@ module.exports = function(integration) {
   return !disabled[integration];
 };
 
-},{}],98:[function(require,module,exports){
+},{}],108:[function(require,module,exports){
 'use strict';
 
 var inherit = require('./utils').inherit;
@@ -11528,7 +12335,7 @@ Page.prototype.track = function(name) {
 
 module.exports = Page;
 
-},{"./facade":93,"./track":100,"./utils":101,"is-email":75}],99:[function(require,module,exports){
+},{"./facade":103,"./track":110,"./utils":111,"is-email":85}],109:[function(require,module,exports){
 'use strict';
 
 var inherit = require('./utils').inherit;
@@ -11600,7 +12407,7 @@ Screen.prototype.track = function(name) {
 
 module.exports = Screen;
 
-},{"./page":98,"./track":100,"./utils":101}],100:[function(require,module,exports){
+},{"./page":108,"./track":110,"./utils":111}],110:[function(require,module,exports){
 'use strict';
 
 var inherit = require('./utils').inherit;
@@ -11927,14 +12734,14 @@ function currency(val) {
 
 module.exports = Track;
 
-},{"./facade":93,"./identify":95,"./utils":101,"is-email":75,"obj-case":88}],101:[function(require,module,exports){
+},{"./facade":103,"./identify":105,"./utils":111,"is-email":85,"obj-case":98}],111:[function(require,module,exports){
 'use strict';
 
 exports.inherit = require('inherits');
 exports.clone = require('@ndhoule/clone');
 exports.type = require('type-component');
 
-},{"@ndhoule/clone":5,"inherits":74,"type-component":107}],102:[function(require,module,exports){
+},{"@ndhoule/clone":5,"inherits":84,"type-component":117}],112:[function(require,module,exports){
 
 /**
  * Generate a slug from the given `str`.
@@ -11959,7 +12766,7 @@ module.exports = function (str, options) {
     .replace(/ +/g, options.separator || '-')
 };
 
-},{}],103:[function(require,module,exports){
+},{}],113:[function(require,module,exports){
 (function (factory) {
     if (typeof exports === 'object') {
         // Node/CommonJS
@@ -12664,7 +13471,7 @@ module.exports = function (str, options) {
     return SparkMD5;
 }));
 
-},{}],104:[function(require,module,exports){
+},{}],114:[function(require,module,exports){
 
 /**
  * Module Dependencies
@@ -12818,7 +13625,7 @@ function stripNested (prop, str, val) {
   });
 }
 
-},{"component-props":66,"props":66}],105:[function(require,module,exports){
+},{"component-props":73,"props":73}],115:[function(require,module,exports){
 
 /**
  * Expose `toNoCase`.
@@ -12890,7 +13697,7 @@ function uncamelize (string) {
     return previous + ' ' + uppers.toLowerCase().split('').join(' ');
   });
 }
-},{}],106:[function(require,module,exports){
+},{}],116:[function(require,module,exports){
 
 exports = module.exports = trim;
 
@@ -12906,7 +13713,7 @@ exports.right = function(str){
   return str.replace(/\s*$/, '');
 };
 
-},{}],107:[function(require,module,exports){
+},{}],117:[function(require,module,exports){
 
 /**
  * toString ref.
@@ -12938,7 +13745,7 @@ module.exports = function(val){
   return typeof val;
 };
 
-},{}],108:[function(require,module,exports){
+},{}],118:[function(require,module,exports){
 module.exports = encode;
 
 function encode(string) {
@@ -12966,7 +13773,7 @@ function encode(string) {
 
     return utftext;
 }
-},{}],109:[function(require,module,exports){
+},{}],119:[function(require,module,exports){
 (function (global){
 
 var rng;
@@ -13002,7 +13809,7 @@ module.exports = rng;
 
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],110:[function(require,module,exports){
+},{}],120:[function(require,module,exports){
 //     uuid.js
 //
 //     Copyright (c) 2010-2012 Robert Kieffer
@@ -13187,7 +13994,7 @@ uuid.unparse = unparse;
 
 module.exports = uuid;
 
-},{"./rng":109}],111:[function(require,module,exports){
+},{"./rng":119}],121:[function(require,module,exports){
 
 /**
  * dependencies.
@@ -13282,7 +14089,7 @@ function all(){
   return ret;
 }
 
-},{"each":62,"unserialize":112}],112:[function(require,module,exports){
+},{"each":69,"unserialize":122}],122:[function(require,module,exports){
 
 /**
  * Unserialize the given "stringified" javascript.
@@ -13299,7 +14106,7 @@ module.exports = function(val){
   }
 };
 
-},{}],113:[function(require,module,exports){
+},{}],123:[function(require,module,exports){
 module.exports={
   "name": "@segment/analytics.js",
   "author": "Segment <friends@segment.com>",
@@ -13329,7 +14136,8 @@ module.exports={
   "dependencies": {
     "@segment/analytics.js-core": "^3.0.0",
     "@segment/analytics.js-integration": "^3.1.0",
-    "analytics.js-integration-findhotel": "git://github.com/FindHotel/analytics.js-integration-findhotel.git#d2fb2fb1479bf80cc2314fc30fa7873e277df5e2"
+    "@segment/analytics.js-integration-segmentio": "git://github.com/FindHotel/analytics.js-integration-findhotel.git#d2fb2fb1479bf80cc2314fc30fa7873e277df5e2",
+    "@segment/analytics.js-integration-google-tag-manager": "https://github.com/segment-integrations/analytics.js-integration-google-tag-manager"
   },
   "devDependencies": {
     "@segment/eslint-config": "^3.1.1",
