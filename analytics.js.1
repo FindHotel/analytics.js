@@ -9657,7 +9657,7 @@ GA.prototype.promotionClickedEnhanced = function(track) {
  */
 
 GA.prototype.productListViewedEnhanced = function(track) {
-  var props = track.properties(); 
+  var props = track.properties();
   var products = track.products();
   this.loadEnhancedEcommerce(track);
   each(products, function(product) {
@@ -9680,7 +9680,7 @@ GA.prototype.productListViewedEnhanced = function(track) {
     }
     window.ga('ec:addImpression', impressionObj);
   });
-  window.ga('send', 'pageview'); 
+  window.ga('send', 'pageview');
   this.pushEnhancedEcommerce(track);
 };
 
@@ -9693,7 +9693,7 @@ GA.prototype.productListViewedEnhanced = function(track) {
  * @param {Track} track
  */
 
-GA.prototype.productListFilteredEnhanced = function(track) {  
+GA.prototype.productListFilteredEnhanced = function(track) {
   var props = track.properties();
   var products = track.products();
   props.filters = props.filters || [];
@@ -9720,8 +9720,8 @@ GA.prototype.productListFilteredEnhanced = function(track) {
     }
     window.ga('ec:addImpression', impressionObj);
   });
-  window.ga('send', 'pageview'); 
-  this.pushEnhancedEcommerce(track); 
+  window.ga('send', 'pageview');
+  this.pushEnhancedEcommerce(track);
 };
 
 
@@ -10905,12 +10905,12 @@ Intercom.prototype.group = function(group) {
   var id = group.groupId();
   if (id) props.id = id;
   var integrationSettings = group.options(this.name);
-  
+
   // format nested custom traits
   props = formatNestedCustomTraits(props, settings);
 
   var traits = extend({ company: props }, hideDefaultLauncher(integrationSettings));
-  
+
   api('update', traits);
 };
 
@@ -10992,7 +10992,7 @@ function formatDate(date) {
  * @return {Object} ret
  * @api private
  */
- 
+
 function formatNestedCustomTraits(obj, settings) {
   var blacklisted = settings.blacklisted || {};
   var defaultMethod = settings.defaultMethod || 'flatten';
@@ -11032,7 +11032,7 @@ function formatNestedCustomTraits(obj, settings) {
   // handle custom nested traits according to the settings
   var formattedTraits = foldl(function(attrs, value, key) {
     var trait = blacklisted[key];
- 
+
     if (trait === 'stringify') {
       attrs.stringify[key] = value;
     } else if (trait === 'flatten') {
@@ -13670,7 +13670,7 @@ Optimizely.prototype.track = function(track) {
     } else if (track.event() !== 'Order Completed') {
       delete eventProperties.revenue;
     }
-    // This is legacy Segment-Optimizely behavior, 
+    // This is legacy Segment-Optimizely behavior,
     // which passes revenue whenever it is present
   } else if (opts.sendRevenueOnlyForOrderCompleted === false && eventProperties.revenue) {
     eventProperties.revenue = Math.round(eventProperties.revenue * 100);
@@ -17842,7 +17842,7 @@ var integrationContext = {
 
 Userlike.prototype.initialize = function() {
   var self = this;
-  var segment_base_info = clone(this.options); 
+  var segment_base_info = clone(this.options);
   var user = this.analytics.user();
   var identify = new Identify({
     userId: user.id(),
@@ -19904,7 +19904,8 @@ function traverse(input, strict) {
 function object(obj, strict) {
   each(obj, function(key, val) {
     if (isodate.is(val, strict)) {
-      obj[key] = isodate.parse(val);
+      // obj[key] = isodate.parse(val);
+      obj[key] = val;
     } else if (type(val) === 'object' || type(val) === 'array') {
       traverse(val, strict);
     }
@@ -21143,7 +21144,7 @@ module.exports = (function() {
 		store.disabled = true
 	}
 	store.enabled = !store.disabled
-	
+
 	return store
 }())
 
@@ -22327,7 +22328,7 @@ var pattern = /(\w+)\[(\d+)\]/
 
 /**
  * Safely encode the given string
- * 
+ *
  * @param {String} str
  * @return {String}
  * @api private
@@ -22343,7 +22344,7 @@ var encode = function(str) {
 
 /**
  * Safely decode the string
- * 
+ *
  * @param {String} str
  * @return {String}
  * @api private
@@ -22611,28 +22612,28 @@ function port (protocol){
       var token = /d{1,4}|m{1,4}|yy(?:yy)?|([HhMsTt])\1?|[LloSZWN]|'[^']*'|'[^']*'/g;
       var timezone = /\b(?:[PMCEA][SDP]T|(?:Pacific|Mountain|Central|Eastern|Atlantic) (?:Standard|Daylight|Prevailing) Time|(?:GMT|UTC)(?:[-+]\d{4})?)\b/g;
       var timezoneClip = /[^-+\dA-Z]/g;
-  
+
       // Regexes and supporting functions are cached through closure
       return function (date, mask, utc, gmt) {
-  
+
         // You can't provide utc if you skip other args (use the 'UTC:' mask prefix)
         if (arguments.length === 1 && kindOf(date) === 'string' && !/\d/.test(date)) {
           mask = date;
           date = undefined;
         }
-  
+
         date = date || new Date;
-  
+
         if(!(date instanceof Date)) {
           date = new Date(date);
         }
-  
+
         if (isNaN(date)) {
           throw TypeError('Invalid date');
         }
-  
+
         mask = String(dateFormat.masks[mask] || mask || dateFormat.masks['default']);
-  
+
         // Allow setting the utc/gmt argument via the mask
         var maskSlice = mask.slice(0, 4);
         if (maskSlice === 'UTC:' || maskSlice === 'GMT:') {
@@ -22642,7 +22643,7 @@ function port (protocol){
             gmt = true;
           }
         }
-  
+
         var _ = utc ? 'getUTC' : 'get';
         var d = date[_ + 'Date']();
         var D = date[_ + 'Day']();
@@ -22686,7 +22687,7 @@ function port (protocol){
           W:    W,
           N:    N
         };
-  
+
         return mask.replace(token, function (match) {
           if (match in flags) {
             return flags[match];
@@ -22766,7 +22767,7 @@ function getWeek(date) {
 /**
  * Get ISO-8601 numeric representation of the day of the week
  * 1 (for Monday) through 7 (for Sunday)
- * 
+ *
  * @param  {Object} `date`
  * @return {Number}
  */
@@ -29063,7 +29064,7 @@ function all(){
 
 /**
  * Unserialize the given "stringified" javascript.
- * 
+ *
  * @param {String} val
  * @return {Mixed}
  */
