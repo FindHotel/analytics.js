@@ -3396,7 +3396,7 @@ Segment.prototype.normalize = function(msg) {
     }
   }
   // if user provides campaign via context, do not overwrite with UTM qs param
-  if (query && !ctx.campaign) {
+  if (!ctx.campaign) {
     ctx.campaign = utm(query);
   }
   this.referrerId(query, ctx);
