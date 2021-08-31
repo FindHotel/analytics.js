@@ -2964,7 +2964,7 @@ module.exports={
   "_args": [
     [
       "@segment/analytics.js-core@3.2.5",
-      "/Users/jopdeklein/Development/analytics.js"
+      "/Users/aliceathens/Projects/analytics.js"
     ]
   ],
   "_from": "@segment/analytics.js-core@3.2.5",
@@ -2989,7 +2989,7 @@ module.exports={
   ],
   "_resolved": "https://registry.npmjs.org/@segment/analytics.js-core/-/analytics.js-core-3.2.5.tgz",
   "_spec": "3.2.5",
-  "_where": "/Users/jopdeklein/Development/analytics.js",
+  "_where": "/Users/aliceathens/Projects/analytics.js",
   "author": {
     "name": "Segment",
     "email": "friends@segment.com"
@@ -3397,7 +3397,7 @@ Segment.prototype.normalize = function(msg) {
   }
   // if user provides campaign via context, do not overwrite with UTM qs param
   if (!ctx.campaign) {
-    ctx.campaign = utm(query);
+    ctx.campaign = query ? utm(query) : {};
   }
   this.referrerId(query, ctx);
   msg.userId = msg.userId || user.id();
@@ -5670,8 +5670,7 @@ function object(obj, strict) {
   }
   each(obj, function(key, val) {
     if (isodate.is(val, strict)) {
-      // obj[key] = isodate.parse(val);
-      obj[key] = val;
+      obj[key] = isodate.parse(val);
     } else if (type(val) === 'object' || type(val) === 'array') {
       traverse(val, strict);
     }
@@ -5697,8 +5696,7 @@ function array(arr, strict) {
     if (type(val) === 'object') {
       traverse(val, strict);
     } else if (isodate.is(val, strict)) {
-      //arr[x] = isodate.parse(val);
-      arr[x] = val;
+      arr[x] = isodate.parse(val);
     }
   });
   return arr;
@@ -6339,14 +6337,16 @@ function bytesToUuid(buf, offset) {
   var i = offset || 0;
   var bth = byteToHex;
   // join used to fix memory issue caused by concatenation: https://bugs.chromium.org/p/v8/issues/detail?id=3175#c4
-  return ([bth[buf[i++]], bth[buf[i++]], 
-	bth[buf[i++]], bth[buf[i++]], '-',
-	bth[buf[i++]], bth[buf[i++]], '-',
-	bth[buf[i++]], bth[buf[i++]], '-',
-	bth[buf[i++]], bth[buf[i++]], '-',
-	bth[buf[i++]], bth[buf[i++]],
-	bth[buf[i++]], bth[buf[i++]],
-	bth[buf[i++]], bth[buf[i++]]]).join('');
+  return ([
+    bth[buf[i++]], bth[buf[i++]],
+    bth[buf[i++]], bth[buf[i++]], '-',
+    bth[buf[i++]], bth[buf[i++]], '-',
+    bth[buf[i++]], bth[buf[i++]], '-',
+    bth[buf[i++]], bth[buf[i++]], '-',
+    bth[buf[i++]], bth[buf[i++]],
+    bth[buf[i++]], bth[buf[i++]],
+    bth[buf[i++]], bth[buf[i++]]
+  ]).join('');
 }
 
 module.exports = bytesToUuid;
@@ -6403,7 +6403,7 @@ var _clockseq;
 var _lastMSecs = 0;
 var _lastNSecs = 0;
 
-// See https://github.com/broofa/node-uuid for API details
+// See https://github.com/uuidjs/uuid for API details
 function v1(options, buf, offset) {
   var i = buf && offset || 0;
   var b = buf || [];
@@ -14138,7 +14138,7 @@ module.exports={
   "dependencies": {
     "@segment/analytics.js-core": "^3.0.0",
     "@segment/analytics.js-integration": "^3.1.0",
-    "@segment/analytics.js-integration-segmentio": "git://github.com/FindHotel/analytics.js-integration-findhotel.git#d2fb2fb1479bf80cc2314fc30fa7873e277df5e2",
+    "@segment/analytics.js-integration-segmentio": "git://github.com/FindHotel/analytics.js-integration-findhotel.git#18662c7fbff11b27d4fd13e780788a17da0861d8",
     "@segment/analytics.js-integration-google-tag-manager": "https://github.com/segment-integrations/analytics.js-integration-google-tag-manager"
   },
   "devDependencies": {
