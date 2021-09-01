@@ -2964,7 +2964,7 @@ module.exports={
   "_args": [
     [
       "@segment/analytics.js-core@3.2.5",
-      "/Users/aliceathens/Projects/analytics.js"
+      "/Users/jop/dev/analytics.js"
     ]
   ],
   "_from": "@segment/analytics.js-core@3.2.5",
@@ -2989,7 +2989,7 @@ module.exports={
   ],
   "_resolved": "https://registry.npmjs.org/@segment/analytics.js-core/-/analytics.js-core-3.2.5.tgz",
   "_spec": "3.2.5",
-  "_where": "/Users/aliceathens/Projects/analytics.js",
+  "_where": "/Users/jop/dev/analytics.js",
   "author": {
     "name": "Segment",
     "email": "friends@segment.com"
@@ -5670,7 +5670,8 @@ function object(obj, strict) {
   }
   each(obj, function(key, val) {
     if (isodate.is(val, strict)) {
-      obj[key] = isodate.parse(val);
+      //obj[key] = isodate.parse(val);
+      obj[key] = val;
     } else if (type(val) === 'object' || type(val) === 'array') {
       traverse(val, strict);
     }
@@ -5696,7 +5697,8 @@ function array(arr, strict) {
     if (type(val) === 'object') {
       traverse(val, strict);
     } else if (isodate.is(val, strict)) {
-      arr[x] = isodate.parse(val);
+      //arr[x] = isodate.parse(val);
+      arr[x] = val;
     }
   });
   return arr;
