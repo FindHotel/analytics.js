@@ -37,6 +37,7 @@ distclean: clean
 # Build analytics.js.
 analytics.js: install $(SRC) package.json
 	@$(BROWSERIFY) lib/index.js --standalone analytics > analytics.js
+	git apply parsedate-changes.diff
 
 # Build minified analytics.js.
 analytics.min.js: analytics.js
