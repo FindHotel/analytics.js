@@ -45,7 +45,9 @@ Object.keys(Integrations).forEach(function(name) {
  Make sure the integrations added are also installed and saved in the package.json
  */
 module.exports = {
-  'findhotel': require('@segment/analytics.js-integration-segmentio'),
+  'searchEvas': require('@segment/analytics.js-integration-segmentio'),
+  'engagementEvas': require('@segment/analytics.js-integration-segmentio'),
+  'selectEvas': require('@segment/analytics.js-integration-segmentio'),
   'google-tag-manager': require('@segment/analytics.js-integration-google-tag-manager')
 };
 
@@ -2964,7 +2966,7 @@ module.exports={
   "_args": [
     [
       "@segment/analytics.js-core@3.2.5",
-      "/Users/jop/dev/analytics.js"
+      "/Users/gabrielmanara/projects/analytics.js"
     ]
   ],
   "_from": "@segment/analytics.js-core@3.2.5",
@@ -2989,7 +2991,7 @@ module.exports={
   ],
   "_resolved": "https://registry.npmjs.org/@segment/analytics.js-core/-/analytics.js-core-3.2.5.tgz",
   "_spec": "3.2.5",
-  "_where": "/Users/jop/dev/analytics.js",
+  "_where": "/Users/gabrielmanara/projects/analytics.js",
   "author": {
     "name": "Segment",
     "email": "friends@segment.com"
@@ -3396,8 +3398,8 @@ Segment.prototype.normalize = function(msg) {
     }
   }
   // if user provides campaign via context, do not overwrite with UTM qs param
-  if (!ctx.campaign) {
-    ctx.campaign = query ? utm(query) : {};
+  if (query && !ctx.campaign) {
+    ctx.campaign = utm(query);
   }
   this.referrerId(query, ctx);
   msg.userId = msg.userId || user.id();
