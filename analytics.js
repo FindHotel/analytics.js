@@ -3377,11 +3377,7 @@ Segment.prototype.normalize = function(msg) {
   }
   // if user provides campaign via context, do not overwrite with UTM qs param
   if (!ctx.campaign) {
-<<<<<<< Updated upstream
-    ctx.campaign = query ? utm(query) : {vclid: {}};
-=======
     ctx.campaign = query ? Object.assign(getVclid(query), utm(query)) : getVclid('');
->>>>>>> Stashed changes
   }
   this.referrerId(query, ctx);
   msg.userId = msg.userId || user.id();
@@ -5656,7 +5652,8 @@ function object(obj, strict) {
   }
   each(obj, function(key, val) {
     if (isodate.is(val, strict)) {
-      obj[key] = isodate.parse(val);
+      //obj[key] = isodate.parse(val);
+      obj[key] = val;
     } else if (type(val) === 'object' || type(val) === 'array') {
       traverse(val, strict);
     }
@@ -5682,7 +5679,8 @@ function array(arr, strict) {
     if (type(val) === 'object') {
       traverse(val, strict);
     } else if (isodate.is(val, strict)) {
-      arr[x] = isodate.parse(val);
+      //arr[x] = isodate.parse(val);
+      arr[x] = val;
     }
   });
   return arr;
