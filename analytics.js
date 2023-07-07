@@ -3189,7 +3189,7 @@ var cookieOptions = {
 function getVclid(query) {
   var queryParams = new URLSearchParams(query);
   var id = sessionStorage.getItem('vclid') || queryParams.get('vclid');
-  if (!id) return { vclid: '' };
+  if (!id) return { };
   return { vclid: id };
 }
 
@@ -14122,7 +14122,7 @@ module.exports={
   "dependencies": {
     "@segment/analytics.js-core": "^3.0.0",
     "@segment/analytics.js-integration": "^3.1.0",
-    "@segment/analytics.js-integration-segmentio": "git://github.com/FindHotel/analytics.js-integration-findhotel.git#076a9fb5b1facbb8ff4b1b0247389d80b901b0daq",
+    "@segment/analytics.js-integration-segmentio": "git://github.com/FindHotel/analytics.js-integration-findhotel.git#9833f9d49ae0a636d1cc3da7ff1fbfd32726f8c7",
     "@segment/analytics.js-integration-google-tag-manager": "https://github.com/segment-integrations/analytics.js-integration-google-tag-manager"
   },
   "devDependencies": {
