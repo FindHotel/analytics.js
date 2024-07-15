@@ -1,7 +1,7 @@
 {
   "name": "@segment/analytics.js",
   "author": "Segment <friends@segment.com>",
-  "version": "2.11.0",
+  "version": "2.14.0",
   "description": "The hassle-free way to integrate analytics into any web application.",
   "keywords": [
     "analytics",
@@ -27,7 +27,7 @@
   "dependencies": {
     "@segment/analytics.js-core": "^3.0.0",
     "@segment/analytics.js-integration": "^3.1.0",
-    "@segment/analytics.js-integration-segmentio": "git://github.com/FindHotel/analytics.js-integration-findhotel.git#18662c7fbff11b27d4fd13e780788a17da0861d8",
+    "@segment/analytics.js-integration-segmentio": "git://github.com/FindHotel/analytics.js-integration-findhotel.git#a57b0039090b3866f076fa12e185129bda55da42",
     "@segment/analytics.js-integration-google-tag-manager": "https://github.com/segment-integrations/analytics.js-integration-google-tag-manager"
   },
   "devDependencies": {
