@@ -2961,42 +2961,29 @@ module.exports.User = User;
 
 },{"./cookie":19,"./entity":20,"bind-all":65,"component-cookie":68,"debug":78,"inherits":84,"uuid":120}],28:[function(require,module,exports){
 module.exports={
-  "_args": [
-    [
-      "@segment/analytics.js-core@3.2.5",
-      "/Users/jop/dev/analytics.js"
-    ]
+  "name": "@segment/analytics.js-core",
+  "author": "Segment <friends@segment.com>",
+  "version": "3.2.5",
+  "description": "The hassle-free way to integrate analytics into any web application.",
+  "keywords": [
+    "analytics",
+    "analytics.js",
+    "segment",
+    "segment.io"
   ],
-  "_from": "@segment/analytics.js-core@3.2.5",
-  "_id": "@segment/analytics.js-core@3.2.5",
-  "_inBundle": false,
-  "_integrity": "sha1-269R1OsXop8y6rX/8+ZVqH8j6lI=",
-  "_location": "/@segment/analytics.js-core",
-  "_phantomChildren": {},
-  "_requested": {
-    "type": "version",
-    "registry": true,
-    "raw": "@segment/analytics.js-core@3.2.5",
-    "name": "@segment/analytics.js-core",
-    "escapedName": "@segment%2fanalytics.js-core",
-    "scope": "@segment",
-    "rawSpec": "3.2.5",
-    "saveSpec": null,
-    "fetchSpec": "3.2.5"
+  "main": "lib/index.js",
+  "scripts": {
+    "test": "make test"
   },
-  "_requiredBy": [
-    "/"
-  ],
-  "_resolved": "https://registry.npmjs.org/@segment/analytics.js-core/-/analytics.js-core-3.2.5.tgz",
-  "_spec": "3.2.5",
-  "_where": "/Users/jop/dev/analytics.js",
-  "author": {
-    "name": "Segment",
-    "email": "friends@segment.com"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/segmentio/analytics.js-core"
   },
+  "license": "SEE LICENSE IN LICENSE",
   "bugs": {
     "url": "https://github.com/segmentio/analytics.js-core/issues"
   },
+  "homepage": "https://github.com/segmentio/analytics.js-core#readme",
   "dependencies": {
     "@ndhoule/after": "^1.0.0",
     "@ndhoule/clone": "^1.0.0",
@@ -3032,7 +3019,6 @@ module.exports={
     "segmentio-facade": "^3.0.2",
     "uuid": "^2.0.2"
   },
-  "description": "The hassle-free way to integrate analytics into any web application.",
   "devDependencies": {
     "@segment/analytics.js-integration": "^3.2.0",
     "@segment/eslint-config": "^3.1.1",
@@ -3057,25 +3043,7 @@ module.exports={
     "proclaim": "^3.4.1",
     "sinon": "^1.7.3",
     "watchify": "^3.7.0"
-  },
-  "homepage": "https://github.com/segmentio/analytics.js-core#readme",
-  "keywords": [
-    "analytics",
-    "analytics.js",
-    "segment",
-    "segment.io"
-  ],
-  "license": "SEE LICENSE IN LICENSE",
-  "main": "lib/index.js",
-  "name": "@segment/analytics.js-core",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/segmentio/analytics.js-core.git"
-  },
-  "scripts": {
-    "test": "make test"
-  },
-  "version": "3.2.5"
+  }
 }
 
 },{}],29:[function(require,module,exports){
@@ -3212,6 +3180,30 @@ var cookieOptions = {
   secure: false,
   path: '/'
 };
+
+
+/**
+ * Factory function to get vclid from url or the session storage
+ * @param {string} query
+ */
+
+function getVclid(query) {
+  try {
+    var queryParams = new URLSearchParams(query);
+    var id = sessionStorage.getItem('vclid') || queryParams.get('vclid');
+    if (!id) return {};
+    return { vclid: id };
+  } catch (error) { 
+    if (typeof Sentry !== "undefined") {
+      // eslint-disable-next-line
+      Sentry.captureException(error);
+    }
+
+    // eslint-disable-next-line
+    console.error('getVclid Error =>', error);  
+    return {};
+  }
+}
 
 /**
  * Expose `Segment` integration.
@@ -3397,7 +3389,7 @@ Segment.prototype.normalize = function(msg) {
   }
   // if user provides campaign via context, do not overwrite with UTM qs param
   if (!ctx.campaign) {
-    ctx.campaign = query ? utm(query) : {};
+    ctx.campaign = query ? Object.assign(getVclid(query), utm(query)) : getVclid('');
   }
   this.referrerId(query, ctx);
   msg.userId = msg.userId || user.id();
@@ -3678,7 +3670,7 @@ function getJson(url, callback) {
   xhr.send();
 }
 
-//
+
 /**
  * getTld
  * Get domain.com from subdomain.domain.com, etc.
@@ -3693,6 +3685,8 @@ function getTld(domain) {
  * Noop.
  */
 function noop() {}
+
+
 
 },{"@ndhoule/extend":10,"@ndhoule/keys":13,"@segment/ad-params":17,"@segment/analytics.js-integration":31,"@segment/localstorage-retry":49,"@segment/protocol":59,"@segment/send-json":60,"@segment/top-domain":62,"@segment/utm-params":63,"component-clone":67,"component-cookie":68,"json3":87,"spark-md5":113,"uuid":120,"yields-store":121}],31:[function(require,module,exports){
 'use strict';
@@ -14140,7 +14134,7 @@ module.exports={
   "dependencies": {
     "@segment/analytics.js-core": "^3.0.0",
     "@segment/analytics.js-integration": "^3.1.0",
-    "@segment/analytics.js-integration-segmentio": "git://github.com/FindHotel/analytics.js-integration-findhotel.git#18662c7fbff11b27d4fd13e780788a17da0861d8",
+    "@segment/analytics.js-integration-segmentio": "git://github.com/FindHotel/analytics.js-integration-findhotel.git#a57b0039090b3866f076fa12e185129bda55da42",
     "@segment/analytics.js-integration-google-tag-manager": "https://github.com/segment-integrations/analytics.js-integration-google-tag-manager"
   },
   "devDependencies": {
