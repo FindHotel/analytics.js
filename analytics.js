@@ -3451,7 +3451,8 @@ Segment.prototype.send = function(path, msg, fn) {
   } else if (this.options.beacon && navigator.sendBeacon) {
     // Beacon returns false if the browser couldn't queue the data for transfer
     // (e.g: the data was too big)
-    if (navigator.sendBeacon(url, json.stringify(msg))) {
+    var blob = new Blob([json.stringify(msg)], { type: "application/json" });
+    if (navigator.sendBeacon(url + "?x-api-key=" + self.options.apiKey, blob)) {
       self.debug('beacon sent %o', msg);
       fn();
     } else {
@@ -14108,7 +14109,7 @@ module.exports = function(val){
 module.exports={
   "name": "@segment/analytics.js",
   "author": "Segment <friends@segment.com>",
-  "version": "2.11.0",
+  "version": "2.15.0",
   "description": "The hassle-free way to integrate analytics into any web application.",
   "keywords": [
     "analytics",
