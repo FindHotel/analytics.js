@@ -3185,12 +3185,13 @@ var cookieOptions = {
 /**
  * Factory function to get vclid from url or the session storage
  * @param {string} query
+ * @param {Function} cookie
  */
 
-function getVclid(query) {
+function getVclid(query, cookie) {
   try {
     var queryParams = new URLSearchParams(query);
-    var id = sessionStorage.getItem('vclid') || queryParams.get('vclid');
+    var id = cookie('vclid') || queryParams.get('vclid');
     if (!id) return {};
     return { vclid: id };
   } catch (error) { 
@@ -3389,7 +3390,7 @@ Segment.prototype.normalize = function(msg) {
   }
   // if user provides campaign via context, do not overwrite with UTM qs param
   if (!ctx.campaign) {
-    ctx.campaign = query ? Object.assign(getVclid(query), utm(query)) : getVclid('');
+    ctx.campaign = query ? Object.assign(getVclid(query, this.cookie), utm(query)) : getVclid('', this.cookie);
   }
   this.referrerId(query, ctx);
   msg.userId = msg.userId || user.id();
@@ -3451,8 +3452,7 @@ Segment.prototype.send = function(path, msg, fn) {
   } else if (this.options.beacon && navigator.sendBeacon) {
     // Beacon returns false if the browser couldn't queue the data for transfer
     // (e.g: the data was too big)
-    var blob = new Blob([json.stringify(msg)], { type: "application/json" });
-    if (navigator.sendBeacon(url + "?x-api-key=" + self.options.apiKey, blob)) {
+    if (navigator.sendBeacon(url, json.stringify(msg))) {
       self.debug('beacon sent %o', msg);
       fn();
     } else {
@@ -14109,7 +14109,7 @@ module.exports = function(val){
 module.exports={
   "name": "@segment/analytics.js",
   "author": "Segment <friends@segment.com>",
-  "version": "2.15.0",
+  "version": "2.16.0",
   "description": "The hassle-free way to integrate analytics into any web application.",
   "keywords": [
     "analytics",
@@ -14135,7 +14135,7 @@ module.exports={
   "dependencies": {
     "@segment/analytics.js-core": "^3.0.0",
     "@segment/analytics.js-integration": "^3.1.0",
-    "@segment/analytics.js-integration-segmentio": "git://github.com/FindHotel/analytics.js-integration-findhotel.git#a57b0039090b3866f076fa12e185129bda55da42",
+    "@segment/analytics.js-integration-segmentio": "git://github.com/FindHotel/analytics.js-integration-findhotel.git#18aaeac44e97eac9af5bc4c66a6d045488d83405",
     "@segment/analytics.js-integration-google-tag-manager": "https://github.com/segment-integrations/analytics.js-integration-google-tag-manager"
   },
   "devDependencies": {
